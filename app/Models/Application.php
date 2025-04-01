@@ -16,7 +16,8 @@ class Application extends Model
         'source_of_income',
         'monthly_income',
         'personal_properties',
-        'photo'
+        'photo',
+        'source_of_Income'
     ];
 
     protected $casts = [

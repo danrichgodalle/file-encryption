@@ -55,7 +55,7 @@ new class extends Component {
         $application->civil_status = decrypt($application->civil_status);
         $application->spouse = decrypt($application->spouse);
         $application->contact_person = decrypt($application->contact_person);
-        $application->source_of_income = decrypt($application->source_of_income);
+        $application->source_of_Income = decrypt($application->source_of_income);
         $application->monthly_income = decrypt($application->monthly_income);
         $application->personal_properties = decrypt($application->personal_properties);
         $application->photo = decrypt($application->photo);
@@ -142,7 +142,7 @@ new class extends Component {
                         {{  Str::limit($application->contact_person, 20, '...') }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ Str::limit($application->source_of_income, 20, '...') }}
+                        {{ Str::limit($application->source_of_Income, 20, '...') }}
                     </td>
                     <td class="px-6 py-4">
                         {{  Str::limit($application->monthly_income, 20, '...') }}
@@ -196,7 +196,7 @@ new class extends Component {
                         <p><strong>Civil Status:</strong> {{ decrypt($selectedApplication->civil_status) }}</p>
                         <p><strong>Spouse:</strong> {{ decrypt($selectedApplication->spouse) }}</p>
                         <p><strong>Contact Person:</strong> {{ decrypt($selectedApplication->contact_person) }}</p>
-                        <p><strong>Source of Income:</strong> {{ decrypt($selectedApplication->source_of_income) }}</p>
+                        <p><strong>Source of Income:</strong> {{ decrypt($selectedApplication->source_of_Income) }}</p>
                         <p><strong>Monthly Income:</strong> {{ decrypt($selectedApplication->monthly_income) }}</p>
                         <p><strong>Personal Properties:</strong> {{ decrypt($selectedApplication->personal_properties) }}</p>
                         @if($selectedApplication->photo)

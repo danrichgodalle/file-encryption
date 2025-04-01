@@ -9,7 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-@fluxAppearance
+    @fluxAppearance
 
     <style>
         /* CSS */
@@ -69,11 +69,37 @@
         .footer i {
             font-size: 1.5rem;
         }
+
+        /* Styled Return Button */
+        .return-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 30px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .return-btn:hover {
+            background-color: blue;
+            transform: scale(1.05);
+        }
+
+        .return-btn:focus {
+            outline: none;
+        }
     </style>
 </head>
+
 <body>
 
+    <!-- Return to Home Button -->
     <a href="{{ url('/') }}" class="return-btn">Return to Home</a>
+
     <section class="vh-100">
         <div class="container-fluid h-custom">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -82,7 +108,6 @@
                         class="img-fluid" alt="Sample image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-
                     {{ $slot }}
                 </div>
             </div>

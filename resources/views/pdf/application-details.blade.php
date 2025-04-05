@@ -273,18 +273,27 @@
 
 
             <div class="detail-row">
-                <img src="{{ $photoSrc }}" alt="ID Photo" style="width: 100%">
+                @if($application->photo)
+                    <img src="{{ $photoSrc }}" alt="ID Photo"  style="width: 100%">
+                @else
+                    <flux:subheading>No ID photo found</flux:subheading>
+                @endif
+            
             </div>
         </div>
 
         <div class="section">
-
+            
             <div class="detail-row">
                 <span class="label">Sketch PHOTO:</span>
             </div>
 
             <div class="detail-row">
-                <img src="{{ $photoSketchSrc }}" alt="ID Photo"  style="width: 100%">
+                @if($application->sketch)
+                    <img src="{{ $photoSketchSrc }}" alt="ID Photo"  style="width: 100%">
+                @else
+                    <flux:subheading>No ID photo found</flux:subheading>
+                @endif
             </div>
         </div>
     </div>

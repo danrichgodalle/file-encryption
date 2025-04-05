@@ -267,13 +267,13 @@
         </div>
 
         <div class="section">
+            <div class="detail-row">
+                <span class="label">ID PHOTO:</span>
+            </div>
 
-            <div class="section-title">ID Photo</div>
 
             <div class="detail-row">
-                <span class="mt-4">
-                    <img src="{{ $photoSrc }}" alt="ID Photo" style="width: 100%">
-                </span>
+                <img src="{{ $photoSrc }}" alt="ID Photo" style="width: 100%">
             </div>
         </div>
 
@@ -281,10 +281,10 @@
 
             <div class="detail-row">
                 <span class="label">Sketch PHOTO:</span>
-                <span>
-                    <img src="{{ $photoSrc }}" alt="ID Photo"  style="width: 100%">
-            
-                </span>
+            </div>
+
+            <div class="detail-row">
+                <img src="{{ $photoSketchSrc }}" alt="ID Photo"  style="width: 100%">
             </div>
         </div>
     </div>

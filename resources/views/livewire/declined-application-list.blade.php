@@ -35,10 +35,41 @@ new class extends Component {
     public function exportToPdf($id)
     {
         $application = Application::find($id);
+
+        // Convert photo to base64 if exists
+        $photoSrc = null;
+        if ($application->photo) {
+            $photoPath = public_path('storage/photos/' . $application->photo);
+            if (file_exists($photoPath)) {
+                $photoData = base64_encode(file_get_contents($photoPath));
+                $photoSrc = 'data:image/jpeg;base64,' . $photoData;
+            }
+        }
+
+        $photoSketchSrc = null;
+        if ($application->sketch) {
+            $photoSketchPath = public_path('storage/photos/' . $application->sketch);
+            if (file_exists($photoSketchPath)) {
+                $photoSketchData = base64_encode(file_get_contents($photoSketchPath));
+                $photoSketchSrc = 'data:image/jpeg;base64,' . $photoSketchData;
+            }
+        }
+
+        // Format personal properties
+        $personalProperties = [];
+        if ($application->properties) {
+            $properties = json_decode($application->properties, true);
+            if (is_array($properties)) {
+                $personalProperties = $properties;
+            }
+        }
         
         $data = [
             'application' => $application,
-            'title' => 'Application Details'
+            'title' => 'Application Details',
+            'photoSrc' => $photoSrc,
+            'photoSketchSrc' => $photoSketchSrc,
+            'personalProperties' => $personalProperties
         ];
         
         $pdf = PDF::loadView('pdf.application-details', $data);

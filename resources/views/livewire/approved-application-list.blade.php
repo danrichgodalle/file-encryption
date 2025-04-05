@@ -52,6 +52,15 @@ new class extends Component {
                 }
             }
 
+            $photoSketchSrc = null;
+            if ($application->sketch) {
+                $photoSketchPath = public_path('storage/photos/' . $application->sketch);
+                if (file_exists($photoSketchPath)) {
+                    $photoSketchData = base64_encode(file_get_contents($photoSketchPath));
+                    $photoSketchSrc = 'data:image/jpeg;base64,' . $photoSketchData;
+                }
+            }
+
             // Format personal properties
             $personalProperties = [];
             if ($application->properties) {
@@ -65,6 +74,7 @@ new class extends Component {
                 'application' => $application,
                 'title' => 'Application Details',
                 'photoSrc' => $photoSrc,
+                'photoSketchSrc' => $photoSketchSrc,
                 'personalProperties' => $personalProperties
             ];
             

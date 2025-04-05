@@ -37,6 +37,7 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  @livewireStyles
 </head>
 
 <body class="index-page">
@@ -71,6 +72,8 @@
   </header>
 
   <main class="main">
+
+    <livewire:show-success-alert />
 
     <!-- Hero Section -->
     <section id="hero" class="hero section light-background">
@@ -670,9 +673,10 @@
   <script src="{{ asset('assets/vendor/imagesloaded/imagesloaded.pkgd.min.js')}}"></script>
   <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
   <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Main JS File -->
   <script src="{{ asset('assets/js/main.js')}}"></script>
+  @livewireScripts
 
 </body>
 

@@ -59,6 +59,12 @@
                         <span class="sidebar-icon">✅</span> {{ __('Approved Applications') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
+
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item icon="check-circle" :href="route('application.list.declined')" :current="request()->routeIs('application.list.declined')" wire:navigate class="sidebar-item">
+                        <span class="sidebar-icon">❌</span> {{ __('Declined Applications') }}
+                    </flux:navlist.item>
+                </flux:navlist.group>
             </flux:navlist>
 
             <flux:spacer />

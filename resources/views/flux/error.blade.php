@@ -6,7 +6,7 @@
 @php
 $message ??= $name ? $errors->first($name) : null;
 
-$classes = Flux::classes('mt-3 text-sm font-medium text-red-500 dark:text-red-400')
+$classes = Flux::classes('mt-3 text-xs font-small text-red-500 dark:text-red-400')
     ->add($message ? '' : 'hidden');
 @endphp
 

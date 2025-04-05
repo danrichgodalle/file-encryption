@@ -47,7 +47,7 @@ new #[Layout('components.layouts.form')] class extends Component {
     public $data;
     public $photo;
     public $sketch;
-    public bool $test = true;
+    public bool $test = false;
 
     public function mount()
     {

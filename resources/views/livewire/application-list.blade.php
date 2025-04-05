@@ -31,12 +31,12 @@ new class extends Component {
 
     public function decrypt(): void
     {
-        $this->setDecryptionKey = true;
-        // if ($this->decryptionPassword === $this->defaultPassword) {
-        //     $this->setDecryptionKey = true;
-        // }else {
-        //     session()->flash('status', __('Invalid decryption key.'));
-        // }
+        
+        if ($this->decryptionPassword === $this->defaultPassword) {
+            $this->setDecryptionKey = true;
+        }else {
+            session()->flash('status', __('Invalid decryption key.'));
+        }
 
 
         // $application = Application::find($id);

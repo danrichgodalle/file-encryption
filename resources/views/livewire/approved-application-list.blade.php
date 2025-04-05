@@ -45,7 +45,8 @@ new class extends Component {
             // Convert photo to base64 if exists
             $photoSrc = null;
             if ($application->photo) {
-                $photoPath = public_path('storage/photos/' . $application->photo);
+                $photoPath = storage_path('app/public/photos/' . $application->photo);
+
                 if (file_exists($photoPath)) {
                     $photoData = base64_encode(file_get_contents($photoPath));
                     $photoSrc = 'data:image/jpeg;base64,' . $photoData;
@@ -54,7 +55,7 @@ new class extends Component {
 
             $photoSketchSrc = null;
             if ($application->sketch) {
-                $photoSketchPath = public_path('storage/photos/' . $application->sketch);
+                $photoSketchPath = storage_path('app/public/photos/' . $application->sketch);
                 if (file_exists($photoSketchPath)) {
                     $photoSketchData = base64_encode(file_get_contents($photoSketchPath));
                     $photoSketchSrc = 'data:image/jpeg;base64,' . $photoSketchData;

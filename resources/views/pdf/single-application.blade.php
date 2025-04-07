@@ -115,105 +115,105 @@
         <div class="section">
             <div class="section-title">Personal Information</div>
             <div class="detail-row">
-                <span class="label">Name:</span>
+               
                 <span class="value">{{ $application->name }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Nick Name:</span>
+             
                 <span class="value">{{ $application->nick_name }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Address:</span>
+            
                 <span class="value">{{ $application->address }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Tel No:</span>
+              
                 <span class="value">{{ $application->tel_no }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Cell No:</span>
+              
                 <span class="value">{{ $application->cell_no }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Length of Stay:</span>
+               
                 <span class="value">{{ $application->length_of_stay }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Ownership:</span>
+               
                 <span class="value">{{ $application->ownership }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Rent Amount:</span>
+               
                 <span class="value">{{ $application->rent_amount }}</span>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">Birth Information</div>
+    
             <div class="detail-row">
-                <span class="label">Date of Birth:</span>
+                
                 <span class="value">{{ $application->date_of_birth }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Place of Birth:</span>
+               
                 <span class="value">{{ $application->place_of_birth }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Age:</span>
+          
                 <span class="value">{{ $application->age }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Civil Status:</span>
+            
                 <span class="value">{{ $application->civil_status }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Dependents:</span>
+          
                 <span class="value">{{ $application->dependents }}</span>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">Employment Information</div>
+       
             <div class="detail-row">
-                <span class="label">Employment:</span>
+            
                 <span class="value">{{ $application->employment }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Position:</span>
+            
                 <span class="value">{{ $application->position }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Employer Name:</span>
+               
                 <span class="value">{{ $application->employer_name }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Employer Address:</span>
+            
                 <span class="value">{{ $application->employer_address }}</span>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">Spouse Employment Information</div>
+         
             <div class="detail-row">
-                <span class="label">Spouse Employment:</span>
+                
                 <span class="value">{{ $application->spouse_employment }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Spouse Position:</span>
+                
                 <span class="value">{{ $application->spouse_position }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Spouse Employer Name:</span>
+               
                 <span class="value">{{ $application->spouse_employer_name }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Spouse Employer Address:</span>
+                
                 <span class="value">{{ $application->spouse_employer_address }}</span>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">Properties</div>
+        
             <div class="detail-row">
                 {{ $application->properties }}
             </div>
@@ -242,14 +242,14 @@
         </div>
 
         <div class="detail-row">
-            <span class="label">ID PHOTO:</span>
+        
             <span>
                 {{ $application->photo }}
             </span>
         </div>
 
         <div class="detail-row">
-            <span class="label">Sketch PHOTO:</span>
+   
             <span>
                 {{ $application->sketch }}
             </span>

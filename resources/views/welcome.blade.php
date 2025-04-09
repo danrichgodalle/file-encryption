@@ -104,7 +104,7 @@
         <div class="row gy-4">
 
           <div class="col-lg-6 position-relative" data-aos="fade-up" data-aos-delay="100">
-            <img src="assets/img/about.jpg" class="img-fluid" alt="">
+            <img src="assets/img/10.jpg" class="img-fluid" alt="">
 
           </div>
 
@@ -378,31 +378,15 @@
 
             <div class="swiper-slide">
               <div class="testimonial-item">
-                <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-                <h3>Matt Brandon</h3>
-                <h4>Freelancer</h4>
+                <img src="assets/img/testimonials/9.jpg" class="testimonial-img" alt="">
+                <h3>hillary Delgado</h3>
+                <h4>Accountant</h4>
                 <div class="stars">
                   <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                 </div>
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-                <h3>John Larson</h3>
-                <h4>Entrepreneur</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
+                  <span>As an accountant, your attention to detail, precision, and ability to manage financial complexities are invaluable to the overall success of the team. Through your diligent work, you ensure accuracy, transparency, and compliance, which are the foundations for sound financial decision-making. Your expertise in balancing ledgers, preparing reports, and managing accounts demonstrates not only your technical skills but also your commitment to maintaining financial integrity.</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
               </div>
@@ -468,11 +452,11 @@
 
           <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
             <div class="member">
-              <img src="assets/img/team/4.jpg" class="img-fluid" alt="">
+              <img src="assets/img/team/11.jpg" class="img-fluid" alt="">
               <div class="member-info">
                 <div class="member-info-content">
                   <h4>Joven Agne</h4>
-                  <span>CTO</span>
+                  <span>Supervisor 1 or Roving</span>
                   <div class="social">
                     <a href=""><i class="bi bi-twitter-x"></i></a>
                     <a href=""><i class="bi bi-facebook"></i></a>
@@ -486,10 +470,10 @@
 
           <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
             <div class="member">
-              <img src="assets/img/team/team-4.jpg" class="img-fluid" alt="">
+              <img src="assets/img/team/9.jpg" class="img-fluid" alt="">
               <div class="member-info">
                 <div class="member-info-content">
-                  <h4>Amanda Jepson</h4>
+                  <h4>hillary Delgado</h4>
                   <span>Accountant</span>
                   <div class="social">
                     <a href=""><i class="bi bi-twitter-x"></i></a>

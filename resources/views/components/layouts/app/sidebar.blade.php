@@ -5,7 +5,7 @@
         <style>
             /* Sidebar background color */
             .sidebar-bg {
-                background-color: #3B82F6; /* Light blue */
+                background-color: #030a16; /* Light blue */
             }
 
             /* Bold text and white color */
@@ -43,25 +43,25 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate class="sidebar-item">
+                    <flux:navlist.item  :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate class="sidebar-item">
                         <span class="sidebar-icon">🏠</span> {{ __('Dashboard') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item icon="clipboard-document" :href="route('application.list')" :current="request()->routeIs('application.list')" wire:navigate class="sidebar-item">
+                    <flux:navlist.item  :href="route('application.list')" :current="request()->routeIs('application.list')" wire:navigate class="sidebar-item">
                         <span class="sidebar-icon">📝</span> {{ __('Applications') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item icon="check-circle" :href="route('application.list.approved')" :current="request()->routeIs('application.list.approved')" wire:navigate class="sidebar-item">
+                    <flux:navlist.item  :href="route('application.list.approved')" :current="request()->routeIs('application.list.approved')" wire:navigate class="sidebar-item">
                         <span class="sidebar-icon">✅</span> {{ __('Approved Applications') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item icon="check-circle" :href="route('application.list.declined')" :current="request()->routeIs('application.list.declined')" wire:navigate class="sidebar-item">
+                    <flux:navlist.item  :href="route('application.list.declined')" :current="request()->routeIs('application.list.declined')" wire:navigate class="sidebar-item">
                         <span class="sidebar-icon">❌</span> {{ __('Declined Applications') }}
                     </flux:navlist.item>
                 </flux:navlist.group>

@@ -70,28 +70,29 @@
             font-size: 1.5rem;
         }
 
-        /* Styled Return Button */
-        .return-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-align: center;
-            text-decoration: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 30px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
+           /* Styled Return Button */
+    .return-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 30px;
+        transition: background-color 0.3s, transform 0.3s;
+        margin-top: 20px; /* Added margin-top */
+    }
 
-        .return-btn:hover {
-            background-color: blue;
-            transform: scale(1.05);
-        }
+    .return-btn:hover {
+        background-color: blue;
+        transform: scale(1.05);
+    }
 
-        .return-btn:focus {
-            outline: none;
-        }
+    .return-btn:focus {
+        outline: none;
+    }
     </style>
 </head>
 

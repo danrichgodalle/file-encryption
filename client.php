@@ -1,257 +1,143 @@
 <!DOCTYPE html>
-<html lang="tl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            min-height: 100vh;
-<<<<<<< HEAD
-=======
-            background-color: #f4f6f7;
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
-        }
-
-        .container {
-            display: flex;
-            width: 100%;
-        }
-
-        .sidebar {
-<<<<<<< HEAD
-            background-color: #2c3e50;
-=======
-            background-color: #34495e;
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
-            color: white;
-            width: 250px;
-            padding: 20px;
-            box-sizing: border-box;
-<<<<<<< HEAD
-=======
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
-        }
-
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 30px;
-<<<<<<< HEAD
-=======
-            font-size: 24px;
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            margin: 20px 0;
-        }
-
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-<<<<<<< HEAD
-        }
-
-        .sidebar ul li a:hover {
-            text-decoration: underline;
-=======
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .sidebar ul li a:hover {
-            background-color: #2c3e50;
-        }
-
-        .logout-btn {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e74c3c;
-            color: white;
-            text-align: center;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .logout-btn:hover {
-            background-color: #c0392b;
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
-        }
-
-        .main-content {
-            padding: 20px;
-            flex-grow: 1;
-        }
-
-        h3 {
-<<<<<<< HEAD
-            color: #2c3e50;
-=======
-            color: #34495e;
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
-        }
-
-        .dashboard {
-            background-color: #ecf0f1;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-<<<<<<< HEAD
-=======
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            max-width: 400px;
-        }
-
-        form input {
-            margin-bottom: 10px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-<<<<<<< HEAD
-=======
-            border-radius: 5px;
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
-        }
-
-        form button {
-            padding: 10px;
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-<<<<<<< HEAD
-=======
-            border-radius: 5px;
-            transition: background-color 0.3s;
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
-        }
-
-        form button:hover {
-            background-color: #2ecc71;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Client Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
 </head>
-<body>
-    <div class="container">
-        <div class="sidebar">
-<<<<<<< HEAD
-            <h2>Client Dashboard</h2>
-            <ul>
-                <li><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#application-form">Application Form</a></li>
-                <li><a href="#loan">Loan</a></li>
-            </ul>
-=======
-            <div>
-                <h2>Client Dashboard</h2>
-                <ul>
-                    <li><a href="#dashboard">Dashboard</a></li>
-                    <li><a href="#application-form">Application Form</a></li>
-                    <li><a href="#loan">My Loan</a></li>
-                </ul>
-            </div>
-            <button class="logout-btn">Log Out</button>
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
+<body class="bg-gray-50">
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#3D8BFF] text-white flex flex-col justify-between">
+      <div>
+        <div class="text-2xl font-semibold p-6">Client User</div>
+        <nav class="flex flex-col px-6 space-y-2">
+          <button onclick="showSection('dashboard')" class="bg-blue-300 text-blue-900 font-semibold rounded-xl py-2 px-4 text-left">Dashboard</button>
+          <button onclick="showSection('loans')" class="hover:bg-blue-400 rounded-xl py-2 px-4 text-left">My Loans</button>
+          <button onclick="showSection('apply')" class="hover:bg-blue-400 rounded-xl py-2 px-4 text-left">Apply</button>
+          <a href="#" class="hover:bg-blue-400 rounded-xl py-2 px-4">Client Users</a>
+        </nav>
+      </div>
+      <div class="p-6">
+        <button class="w-full border border-white text-white rounded-xl py-2 hover:bg-white hover:text-[#3D8BFF] transition">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10">
+
+      <!-- Dashboard (Welcome Page) -->
+      <div id="dashboardSection">
+        <div class="flex justify-between items-center mb-8">
+          <h1 class="text-3xl font-bold text-gray-800">Welcome to Your Dashboard</h1>
+          <div class="flex items-center gap-4">
+            <img src="https://i.ibb.co/4pDNDk1/avatar.png" alt="Avatar" class="w-10 h-10 rounded-full border">
+            <button class="bg-[#3D8BFF] text-white px-4 py-2 rounded-xl hover:bg-blue-500">Logout</button>
+          </div>
         </div>
-        <div class="main-content">
-            <div id="dashboard" class="dashboard">
-                <h3>Welcome to Your Dashboard</h3>
-                <p>This is the main area where you can see an overview of your account and recent activity.</p>
-            </div>
-
-            <div id="application-form" style="display:none;">
-                <h3>Application Form</h3>
-                <form>
-                    <label for="name">Full Name:</label>
-                    <input type="text" id="name" name="name" required>
-
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-
-                    <label for="phone">Phone Number:</label>
-                    <input type="text" id="phone" name="phone" required>
-
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
-
-            <div id="loan" style="display:none;">
-                <h3>Loan Information</h3>
-                <form>
-                    <label for="loan-amount">Loan Amount:</label>
-                    <input type="number" id="loan-amount" name="loan-amount" placeholder="₱" required>
-
-                    <label for="due-date">Due Date:</label>
-                    <input type="date" id="due-date" name="due-date" required>
-
-                    <button type="submit">Save Loan</button>
-                </form>
-            </div>
+        <div class="bg-white p-10 rounded-xl shadow text-center">
+          <h2 class="text-2xl font-bold text-gray-700 mb-4">Hello, Client!</h2>
+          <p class="text-gray-600">Welcome to your personal dashboard. Use the sidebar to navigate through your loan options and status.</p>
         </div>
-    </div>
+      </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const dashboard = document.getElementById('dashboard');
-            const applicationForm = document.getElementById('application-form');
-            const loan = document.getElementById('loan');
+      <!-- My Loans (Loan Monitoring + Due Date Box) -->
+      <div id="loansSection" class="hidden">
+        <div class="mb-6">
+          <h1 class="text-3xl font-bold text-gray-800 mb-4">My Loan Monitoring</h1>
 
-            const dashboardLink = document.querySelector('a[href="#dashboard"]');
-            const applicationLink = document.querySelector('a[href="#application-form"]');
-            const loanLink = document.querySelector('a[href="#loan"]');
+          <!-- Due Date Box -->
+          <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-xl mb-6 shadow">
+            <div class="flex justify-between items-center">
+              <div>
+                <h2 class="text-xl font-semibold">Loan Approved</h2>
+                <p class="text-sm">Approval Date: <span class="font-medium">April 24, 2025</span></p>
+                <p class="text-sm">Loan Amount: <span class="font-medium">₱3,000.00</span></p>
+              </div>
+              <div class="text-right">
+                <h2 class="text-xl font-semibold">Next Due Date</h2>
+                <p class="text-2xl font-bold">June 23, 2025</p>
+                <span class="text-sm">₱3,000.00 total loan</span>
+              </div>
+            </div>
+          </div>
 
-            dashboardLink.addEventListener('click', function() {
-                dashboard.style.display = 'block';
-                applicationForm.style.display = 'none';
-                loan.style.display = 'none';
-            });
+          <!-- Monitoring Table -->
+          <div class="bg-white shadow rounded-xl p-6 overflow-x-auto">
+            <table class="min-w-full text-sm text-gray-700">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="px-4 py-2 text-left">Date</th>
+                  <th class="px-4 py-2 text-left">Amount Paid</th>
+                  <th class="px-4 py-2 text-left">Balance</th>
+                  <th class="px-4 py-2 text-left">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b">
+                  <td class="px-4 py-2">April 20, 2025</td>
+                  <td class="px-4 py-2">₱300.00</td>
+                  <td class="px-4 py-2">₱2,700.00</td>
+                  <td class="px-4 py-2 text-green-600 font-semibold">Paid</td>
+                </tr>
+                <tr class="border-b">
+                  <td class="px-4 py-2">April 21, 2025</td>
+                  <td class="px-4 py-2">₱300.00</td>
+                  <td class="px-4 py-2">₱2,400.00</td>
+                  <td class="px-4 py-2 text-green-600 font-semibold">Paid</td>
+                </tr>
+                <tr class="border-b">
+                  <td class="px-4 py-2">April 22, 2025</td>
+                  <td class="px-4 py-2">₱300.00</td>
+                  <td class="px-4 py-2">₱2,100.00</td>
+                  <td class="px-4 py-2 text-yellow-500 font-semibold">Pending</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-            applicationLink.addEventListener('click', function() {
-                applicationForm.style.display = 'block';
-                dashboard.style.display = 'none';
-                loan.style.display = 'none';
-            });
+      <!-- Apply (Loan Application Form) -->
+      <div id="applySection" class="hidden">
+        <div class="mb-6">
+          <h1 class="text-3xl font-bold text-gray-800 mb-4">Apply for a Loan</h1>
+          <div class="bg-white rounded-xl shadow p-6">
+            <form class="space-y-4">
+              <input type="text" placeholder="Loan Amount" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300">
+              <input type="text" placeholder="Loan Type" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+              <input type="text" placeholder="Purpose" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+              <textarea placeholder="Description" class="w-full border border-gray-300 rounded-lg px-4 py-2 h-24 resize-none"></textarea>
+              <button type="submit" class="w-full bg-[#3D8BFF] text-white py-2 rounded-lg text-lg font-semibold hover:bg-blue-500 transition">Submit Application</button>
+            </form>
+          </div>
+        </div>
+      </div>
 
-            loanLink.addEventListener('click', function() {
-                loan.style.display = 'block';
-                dashboard.style.display = 'none';
-                applicationForm.style.display = 'none';
-            });
+    </main>
+  </div>
 
-            // Default view
-            dashboard.style.display = 'block';
-            applicationForm.style.display = 'none';
-            loan.style.display = 'none';
-        });
-    </script>
+  <!-- JavaScript to Toggle Sections -->
+  <script>
+    function showSection(section) {
+      document.getElementById('dashboardSection').classList.add('hidden');
+      document.getElementById('loansSection').classList.add('hidden');
+      document.getElementById('applySection').classList.add('hidden');
+
+      if (section === 'dashboard') {
+        document.getElementById('dashboardSection').classList.remove('hidden');
+      } else if (section === 'loans') {
+        document.getElementById('loansSection').classList.remove('hidden');
+      } else if (section === 'apply') {
+        document.getElementById('applySection').classList.remove('hidden');
+      }
+    }
+  </script>
+
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8

@@ -11,6 +11,10 @@
             padding: 0;
             display: flex;
             min-height: 100vh;
+<<<<<<< HEAD
+=======
+            background-color: #f4f6f7;
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         }
 
         .container {
@@ -19,16 +23,30 @@
         }
 
         .sidebar {
+<<<<<<< HEAD
             background-color: #2c3e50;
+=======
+            background-color: #34495e;
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
             color: white;
             width: 250px;
             padding: 20px;
             box-sizing: border-box;
+<<<<<<< HEAD
+=======
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         }
 
         .sidebar h2 {
             text-align: center;
             margin-bottom: 30px;
+<<<<<<< HEAD
+=======
+            font-size: 24px;
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         }
 
         .sidebar ul {
@@ -44,10 +62,38 @@
             color: white;
             text-decoration: none;
             font-size: 18px;
+<<<<<<< HEAD
         }
 
         .sidebar ul li a:hover {
             text-decoration: underline;
+=======
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #2c3e50;
+        }
+
+        .logout-btn {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e74c3c;
+            color: white;
+            text-align: center;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         }
 
         .main-content {
@@ -56,7 +102,11 @@
         }
 
         h3 {
+<<<<<<< HEAD
             color: #2c3e50;
+=======
+            color: #34495e;
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         }
 
         .dashboard {
@@ -64,6 +114,10 @@
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
+<<<<<<< HEAD
+=======
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         }
 
         form {
@@ -77,6 +131,10 @@
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ccc;
+<<<<<<< HEAD
+=======
+            border-radius: 5px;
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         }
 
         form button {
@@ -86,6 +144,11 @@
             border: none;
             font-size: 16px;
             cursor: pointer;
+<<<<<<< HEAD
+=======
+            border-radius: 5px;
+            transition: background-color 0.3s;
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         }
 
         form button:hover {
@@ -96,12 +159,24 @@
 <body>
     <div class="container">
         <div class="sidebar">
+<<<<<<< HEAD
             <h2>Client Dashboard</h2>
             <ul>
                 <li><a href="#dashboard">Dashboard</a></li>
                 <li><a href="#application-form">Application Form</a></li>
                 <li><a href="#loan">Loan</a></li>
             </ul>
+=======
+            <div>
+                <h2>Client Dashboard</h2>
+                <ul>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#application-form">Application Form</a></li>
+                    <li><a href="#loan">My Loan</a></li>
+                </ul>
+            </div>
+            <button class="logout-btn">Log Out</button>
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         </div>
         <div class="main-content">
             <div id="dashboard" class="dashboard">
@@ -175,4 +250,8 @@
         });
     </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8

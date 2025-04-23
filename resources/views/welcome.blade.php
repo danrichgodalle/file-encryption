@@ -43,12 +43,11 @@
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <!-- Uncomment the line below if you also wish to use text logo -->
-        <!-- <h1 class="sitename">Butterfly</h1>  -->
-      </a>
-
+     <!-- filepath: c:\Users\jhonner\OneDrive\Desktop\file-back up\resources\views\welcome.blade.php -->
+<a href="" style="display: flex; align-items: center; text-decoration: none; margin-left: 0;">
+    <img src="{{ asset('assets/img/microm.png') }}" alt="Microm Logo" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #000; margin-right: 10px;">
+    <span style="font-size: 18px; font-weight: bold; color: #000;">Microm Credit</span>
+</a>
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="#hero" class="active">Home</a></li>
@@ -59,7 +58,7 @@
           <li><a href="#contact">Contact</a></li>
           <li class="nav-item">
             <a class="nav-link btn btn-outline-light ms-2" href="{{ url('/login') }}">
-                <i class="fas fa-sign-in-alt login-icon"></i> Login
+                <i class="fas fa-sign-in-alt login-icon"></i> Admin
             </a>
         </li>
         </ul>
@@ -73,11 +72,12 @@
 
     <livewire:show-success-alert />
 
-    <!-- Hero Section -->
-    <section id="hero" class="hero section light-background">
 
-      <div class="container">
+<!-- Hero Section -->
+<section id="hero" class="hero section light-background">
+    <div class="container">
         <div class="row gy-4">
+<<<<<<< HEAD
           <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-md-start" data-aos="fade-up">
             <h2>WELCOME TO MICROM CREDIT CORPORATION </h2>
             <p>We are excited to introduce you to micro-lending,
@@ -90,11 +90,24 @@
           <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">
             <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
           </div>
+=======
+            <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-md-start" data-aos="fade-up">
+                <h2>WELCOME TO MICROM CREDIT CORPORATION</h2>
+                <p>We are excited to introduce you to micro-lending,
+                    a great way to support small businesses and individuals who need access to financial resources.
+                </p>
+                <div class="d-flex mt-4 justify-content-center justify-content-md-start gap-3">
+                    <a href="{{ route('client.signup') }}" class="cta-btn">Sign Up</a>
+                    <a href="{{ route('client.signin') }}" class="cta-btn">Sign In</a>
+                </div>
+            </div>
+            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">
+                <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+            </div>
+>>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         </div>
-      </div>
-
-    </section><!-- /Hero Section -->
-
+    </div>
+</section>
     <!-- About Section -->
     <section id="about" class="about section">
 

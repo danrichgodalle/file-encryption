@@ -77,20 +77,6 @@
 <section id="hero" class="hero section light-background">
     <div class="container">
         <div class="row gy-4">
-<<<<<<< HEAD
-          <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-md-start" data-aos="fade-up">
-            <h2>WELCOME TO MICROM CREDIT CORPORATION </h2>
-            <p>We are excited to introduce you to micro-lending,
-                a great way to support small businesses and individuals who need access to financial resources. </p>
-           <div class="d-flex mt-4 justify-content-center justify-content-md-start">
-      <a href="{{ route('app.form')  }}" class="cta-btn">Get Started</a>
-</div>
-
-          </div>
-          <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">
-            <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
-          </div>
-=======
             <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-md-start" data-aos="fade-up">
                 <h2>WELCOME TO MICROM CREDIT CORPORATION</h2>
                 <p>We are excited to introduce you to micro-lending,
@@ -104,7 +90,6 @@
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">
                 <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
             </div>
->>>>>>> 7a4cd16f6780aaeeb13f26c74ddde990a00e72b8
         </div>
     </div>
 </section>

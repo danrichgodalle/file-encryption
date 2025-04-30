@@ -83,8 +83,8 @@
                     a great way to support small businesses and individuals who need access to financial resources.
                 </p>
                 <div class="d-flex mt-4 justify-content-center justify-content-md-start gap-3">
-                    <a href="{{ route('client.signup') }}" class="cta-btn">Sign Up</a>
-                    <a href="{{ route('client.signin') }}" class="cta-btn">Sign In</a>
+                    <a href="{{ route('login') }}" class="cta-btn">Sign Up</a>
+                    <a href="{{ route('register') }}" class="cta-btn">Sign In</a>
                 </div>
             </div>
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">

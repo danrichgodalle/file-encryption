@@ -86,6 +86,7 @@ new class extends Component {
         $application->properties = $application->properties ?  decrypt($application->properties) : '';
         $application->photo = $application->photo ?  decrypt($application->photo) : '';
         $application->sketch = $application->sketch ?  decrypt($application->sketch) : '';
+        $application->signature = $application->signature ?  decrypt($application->signature) : '';
         $application->status = 'approved';
         $application->save();
         Flux::modal('edit-profile')->close();
@@ -141,6 +142,7 @@ new class extends Component {
         $application->properties = $application->properties ?  decrypt($application->properties) : '';
         $application->photo = $application->photo ?  decrypt($application->photo) : '';
         $application->sketch = $application->sketch ?  decrypt($application->sketch) : '';
+        $application->signature = $application->signature ?  decrypt($application->signature) : '';
         $application->status = 'declined';
         $application->decline_reason = $this->declineReason;
         $application->save();
@@ -182,97 +184,25 @@ new class extends Component {
 }; ?>
 
 <div>
-    
-    <!--<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">-->
-
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-    <thead class="text-xs text-white uppercase bg-gray-800 dark:bg-gray-900 dark:text-white">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Decrypt
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Date of Birth
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Age
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Civil Status
-                </th>
-
-              
-
-                <th scope="col" class="px-6 py-3">
-                  contact_person
-                </th>
-
-               
-                <th scope="col" class="px-6 py-3">
-                    properties
-                </th>
-
-                <th scope="col" class="px-6 py-3">
-                   ID Photo
-                </th>
-
-                <th scope="col" class="px-6 py-3">
-                    Sketch Photo
-                 </th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach($applications as $application)
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        <div class="flex items-center gap-4">
-                            <flux:button wire:click="selectApplication({{  $application->id }})">Decrypt</flux:button>
-                            <flux:button wire:click="exportToPdf({{  $application->id }})" variant="primary" class="flex items-center gap-1" icon="printer">
-                                Export
-                            </flux:button>
-                        </div>
-                    </th>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        {{  Str::limit($application->name, 20, '...') }}
-                    </th>
-                    
-
-                    <td class="px-6 py-4">
-                        {{  Str::limit($application->date_of_birth, 20, '...') }}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{  Str::limit($application->age, 20, '...') }}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{  Str::limit($application->civil_status, 20, '...') }}
-                    </td>
-                    
-                    <td class="px-6 py-4">
-                        {{  Str::limit($application->contact_person, 20, '...') }}
-                    </td>
-  
-                  
-                    <td class="px-6 py-4">
-                        {{  Str::limit($application->properties, 20, '...') }}
-                    </td>
-
-                    <td>
-                        {{  Str::limit($application->photo, 20, '...') }}
-                    </td>
-
-                    <td>
-                        {{  Str::limit($application->sketch, 20, '...') }}
-                    </td>
-                </tr>
-            @endforeach
-
-        </tbody>
-    </table>
+    <div class="grid grid-cols-4 gap-6 p-6">
+        @foreach($applications as $application)
+            <div class="flex flex-col items-center cursor-pointer" wire:click="selectApplication({{ $application->id }})">
+                <!-- Folder Icon -->
+                <div class="w-24 h-20 bg-yellow-400 rounded-t-lg relative flex items-center justify-center mb-2">
+                    <div class="absolute -top-2 w-12 h-3 bg-yellow-400 rounded-t-lg"></div>
+                </div>
+                <!-- Name and Date -->
+                <div class="text-center">
+                    <p class="text-sm font-medium text-gray-900">
+                        {{ $selectedApplication && $setDecryptionKey ? decrypt($application->name) : Str::limit($application->name, 20, '...') }}
+                    </p>
+                    <p class="text-xs text-gray-500">
+                        {{ $selectedApplication && $setDecryptionKey ? decrypt($application->date_of_birth) : Str::limit($application->date_of_birth, 20, '...') }}
+                    </p>
+                </div>
+            </div>
+        @endforeach
+    </div>
 
     <flux:modal name="edit-profile" class="md:w-1/2" wire:model.self="setDecryptionKey">
 
@@ -484,6 +414,22 @@ new class extends Component {
                                         <flux:subheading>No sketch found</flux:subheading>
                                     @endif
                                 </flux:subheading>
+                            </div>
+
+
+                        </div>
+
+                        <div class="flex">
+                            <div class="w-full">
+                                <flux:heading size="lg">Signature</flux:heading>
+                                
+                                @if($selectedApplication->signature)
+                                    <div class="flex justify-center">
+                                        <img src="{{ asset('storage/signatures/' . decrypt($selectedApplication->signature)) }}" alt="Signature" class="rounded-lg max-w-md">
+                                    </div>
+                                @else
+                                    <flux:text>No signature available</flux:text>
+                                @endif
                             </div>
                         </div>
 

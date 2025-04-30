@@ -296,6 +296,20 @@
                 @endif
             </div>
         </div>
+
+        <div class="section">
+            <div class="detail-row">
+                <span class="label">Signature:</span>
+            </div>
+
+            <div class="detail-row">
+                @if($application->signature)
+                    <img src="{{ $signatureSrc }}" alt="Signature" style="width: 300px">
+                @else
+                    <span class="no-data">No signature found</span>
+                @endif
+            </div>
+        </div>
     </div>
 
     <div class="footer">

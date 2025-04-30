@@ -65,6 +65,12 @@
                         <span class="sidebar-icon">❌</span> {{ __('Declined Applications') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
+
+                <flux:navlist.group class="grid">
+                    <flux:navlist.item  :href="route('admin.manage.loans')" :current="request()->routeIs('admin.manage.loans')" wire:navigate class="sidebar-item">
+                        <span class="sidebar-icon">💰</span> {{ __('Manage Loans') }}
+                    </flux:navlist.item>
+                </flux:navlist.group>
             </flux:navlist>
 
             <flux:spacer />
@@ -151,12 +157,12 @@
 
                     <flux:menu.separator />
 
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                    {{-- <form method="POST" action="{{ route('logout') }}" class="w-full">
                         @csrf
                         <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
                             {{ __('Log Out') }}
                         </flux:menu.item>
-                    </form>
+                    </form> --}}
                 </flux:menu>
             </flux:dropdown>
         </flux:header>

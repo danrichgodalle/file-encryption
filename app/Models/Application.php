@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Application extends Model
 {
@@ -33,10 +34,17 @@ class Application extends Model
         'properties',
         'photo',
         'sketch',
+        'signature',
         'decline_reason',
+        'user_id',
     ];
 
     protected $casts = [
         'personal_properties' => 'array',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

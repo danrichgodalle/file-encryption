@@ -15,41 +15,30 @@ new class extends Component {
     public $decryptionPassword;
     public $declineReason = '';
     public $showDeclineForm = false;
+    public $isDecrypted = false;
 
     public function mount(): void
     {
        $this->applications = Application::whereStatus('pending')->get();
-       
     }
 
     public function selectApplication($id): void
     {
         $this->selectedApplication = Application::find($id);
-
+        $this->setDecryptionKey = false;
+        $this->isDecrypted = false;
+        $this->decryptionPassword = '';
+        
         Flux::modal('edit-profile')->show();
     }
 
     public function decrypt(): void
     {
-        
         if ($this->decryptionPassword === $this->defaultPassword) {
-            $this->setDecryptionKey = true;
-        }else {
+            $this->isDecrypted = true;
+        } else {
             session()->flash('status', __('Invalid decryption key.'));
         }
-
-
-        // $application = Application::find($id);
-        // $application->name = decrypt($application->name);
-        // $application->date_of_birth = decrypt($application->date_of_birth);
-        // $application->age = decrypt($application->age);
-        // $application->civil_status = decrypt($application->civil_status);
-        // $application->spouse = decrypt($application->spouse);
-        // $application->contact_person = decrypt($application->contact_person);
-        // $application->source_of_income = decrypt($application->source_of_income);
-        // $application->monthly_income = decrypt($application->monthly_income);
-        // $application->personal_properties = decrypt($application->personal_properties);
-        // $application->save();
     }
 
     public function approved($id)
@@ -204,35 +193,16 @@ new class extends Component {
         @endforeach
     </div>
 
-    <flux:modal name="edit-profile" class="md:w-1/2" wire:model.self="setDecryptionKey">
-
-        @if(!$setDecryptionKey)
-            <div class="space-y-6">
-                <div>
-                    <flux:heading size="lg">Enter Decryption Key</flux:heading>
-                </div>
-
-                <x-auth-session-status class="text-center" :status="session('status')" />
-
-                <div>
-                    <flux:input type="password" wire:model="decryptionPassword" placeholder="Enter Decryption Key" />
-                </div>
-
-                <div class="flex">
-                    <flux:spacer />
-                    <flux:button wire:click="decrypt" variant="primary">Decrypt</flux:button>
-                </div>
+    <flux:modal name="edit-profile" class="md:w-1/2">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Application Details</flux:heading>
+                <flux:subheading>View application details.</flux:subheading>
             </div>
-        @endif
 
-        @if($setDecryptionKey)
-            <div class="space-y-6">
-                <div>
-                    <flux:heading size="lg">Application Details</flux:heading>
-                    <flux:subheading>View and decrypt application details.</flux:subheading>
-                </div>
-
-                @if($selectedApplication)
+            @if($selectedApplication)
+                @if($isDecrypted)
+                    <div class="space-y-6">
                         <div class="flex">
                             <div class="w-1/2">
                                 <flux:heading size="lg">Name</flux:heading>
@@ -246,7 +216,7 @@ new class extends Component {
 
                         <div class="flex">
                             <div class="w-1/2">
-                                <flux:heading size="lg">Adddress</flux:heading>
+                                <flux:heading size="lg">Address</flux:heading>
                                 <flux:subheading>{{ $selectedApplication->address ? decrypt($selectedApplication->address) : '' }}</flux:subheading>
                             </div>
                             <div class="w-1/2">
@@ -266,186 +236,96 @@ new class extends Component {
                             </div>
                         </div>
 
-                        <div class="flex">
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Ownership</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->ownership ? decrypt($selectedApplication->ownership) : '' }}</flux:subheading>
-                            </div>
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Rent Amount</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->rent_amount ? decrypt($selectedApplication->rent_amount) : '' }}</flux:subheading>
-                            </div>
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Date Of Birth</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->date_of_birth ? decrypt($selectedApplication->date_of_birth) : '' }}</flux:subheading>
-                            </div>
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Place of Birth</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->place_of_birth ? decrypt($selectedApplication->place_of_birth) : '' }}</flux:subheading>
-                            </div>
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Age</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->age ? decrypt($selectedApplication->age) : '' }}</flux:subheading>
-                            </div>
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Civil Status</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->civil_status ? decrypt($selectedApplication->civil_status) : '' }}</flux:subheading>
-                            </div>
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Dependents</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->dependents ? decrypt($selectedApplication->dependents) : '' }}</flux:subheading>
-                            </div>
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Contact Person</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->contact_person ? decrypt($selectedApplication->contact_person) : '' }}</flux:subheading>
-                            </div>
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Employment</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->employment ? decrypt($selectedApplication->employment) : '' }}</flux:subheading>
-                            </div>  
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Position</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->position ? decrypt($selectedApplication->position) : '' }}</flux:subheading>
-                            </div>  
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Employer Name</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->employer_name ? decrypt($selectedApplication->employer_name) : '' }}</flux:subheading>
-                            </div>  
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Employer Address</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->employer_address ? decrypt($selectedApplication->employer_address) : '' }}</flux:subheading>
-                            </div>
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Spouse Employment</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->spouse_employment ? decrypt($selectedApplication->spouse_employment) : '' }}</flux:subheading>
-                            </div>
-                            <div class="w-1/2"> 
-                                <flux:heading size="lg">Spouse Position</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->spouse_position ? decrypt($selectedApplication->spouse_position) : '' }}</flux:subheading>
-                            </div>
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Spouse Employer Name</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->spouse_employer_name ? decrypt($selectedApplication->spouse_employer_name) : '' }}</flux:subheading>
-                            </div>  
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Spouse Employer Address</flux:heading>
-                                <flux:subheading>{{ $selectedApplication->spouse_employer_address ? decrypt($selectedApplication->spouse_employer_address) : '' }}</flux:subheading>
-                            </div>
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-full">
-                                <flux:heading size="lg">Properties</flux:heading>
-
-                                @if($selectedApplication->properties)
-                                <table class="min-w-full border border-gray-300 divide-y divide-gray-200 mt-6">
-                                    <thead class="bg-gray-100">
-                                        <tr>
-                                            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Type</th>
-                                            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Make/Model</th>
-                                            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Year Acquired</th>
-                                            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Estimated Cost</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        @foreach (json_decode(decrypt($selectedApplication->properties), true) as $index => $property)
-                                            <tr>
-                                                <td class="px-4 py-2 text-sm text-gray-800">{{ $property['type'] }}</td>
-                                                <td class="px-4 py-2 text-sm text-gray-800">{{ $property['make_model'] }}</td>
-                                                <td class="px-4 py-2 text-sm text-gray-800">{{ $property['years_acquired'] }}</td>
-                                                <td class="px-4 py-2 text-sm text-gray-800">₱{{ number_format($property['estimated_cost'], 2) }}</td>
-                                
-                                               
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                                @else
-                                    <flux:subheading>No properties found</flux:subheading>
-                                @endif
-
-                      
-                                
-                            </div>  
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-1/2">
-                                <flux:heading size="lg">ID Photo</flux:heading>
-                                <flux:subheading>
-
-                                    @if($selectedApplication->photo)
-                                        <img src="{{ asset('storage/photos/' . decrypt($selectedApplication->photo)) }}" alt="Photo" class="w-32 h-32 object-cover rounded-lg mt-4">
-                                    @else
-                                        <flux:subheading>No ID photo found</flux:subheading>
-                                    @endif
-                                    
-                                
-                                </flux:subheading>
-                            </div>  
-                            <div class="w-1/2">
-                                <flux:heading size="lg">Sketch</flux:heading>
-                                <flux:subheading>
-                                    @if($selectedApplication->sketch)
-                                    <img src="{{ asset('storage/photos/' . decrypt($selectedApplication->sketch)) }}" alt="Photo" class="w-32 h-32 object-cover rounded-lg mt-4">
-                                    @else
-                                        <flux:subheading>No sketch found</flux:subheading>
-                                    @endif
-                                </flux:subheading>
-                            </div>
-
-
-                        </div>
-
-                        <div class="flex">
-                            <div class="w-full">
-                                <flux:heading size="lg">Signature</flux:heading>
-                                
-                                @if($selectedApplication->signature)
-                                    <div class="flex justify-center">
-                                        <img src="{{ asset('storage/signatures/' . decrypt($selectedApplication->signature)) }}" alt="Signature" class="rounded-lg max-w-md">
-                                    </div>
-                                @else
-                                    <flux:text>No signature available</flux:text>
-                                @endif
-                            </div>
-                        </div>
-
-                            
-                    
-                        <flux:spacer />
-                    
-                    
                         <div class="flex gap-2">
-                                <flux:button wire:click="approved({{ $selectedApplication->id }})" variant="primary">Approved</flux:button>
-                                <flux:button wire:click="showDeclinedMessage({{ $selectedApplication->id }})" variant="danger">Declined</flux:button>
+                            <flux:button wire:click="approved({{ $selectedApplication->id }})" variant="primary">Approved</flux:button>
+                            <flux:button wire:click="showDeclinedMessage({{ $selectedApplication->id }})" variant="danger">Declined</flux:button>
                         </div>
                     </div>
+                @else
+                    <div class="space-y-6">
+                        <div class="flex">
+                            <div class="w-1/2">
+                                <flux:heading size="lg">Name</flux:heading>
+                                <flux:subheading>{{ Str::limit($selectedApplication->name, 20, '...') }}</flux:subheading>
+                            </div>
+                            <div class="w-1/2">
+                                <flux:heading size="lg">Nick Name</flux:heading>
+                                <flux:subheading>{{ Str::limit($selectedApplication->nick_name, 20, '...') }}</flux:subheading>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="w-1/2">
+                                <flux:heading size="lg">Address</flux:heading>
+                                <flux:subheading>{{ Str::limit($selectedApplication->address, 20, '...') }}</flux:subheading>
+                            </div>
+                            <div class="w-1/2">
+                                <flux:heading size="lg">Tel No</flux:heading>
+                                <flux:subheading>{{ Str::limit($selectedApplication->tel_no, 20, '...') }}</flux:subheading>
+                            </div>
+                        </div>
+
+                        <div class="flex">
+                            <div class="w-1/2">
+                                <flux:heading size="lg">Cell No</flux:heading>
+                                <flux:subheading>{{ Str::limit($selectedApplication->cell_no, 20, '...') }}</flux:subheading>
+                            </div>
+                            <div class="w-1/2">
+                                <flux:heading size="lg">Length of Stay</flux:heading>
+                                <flux:subheading>{{ Str::limit($selectedApplication->length_of_stay, 20, '...') }}</flux:subheading>
+                            </div>
+                        </div>
+
+                        @if(!$setDecryptionKey)
+                            <div class="mt-6">
+                                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                                    <div class="flex">
+                                        <div class="flex-shrink-0">
+                                            <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm text-yellow-700">
+                                                This data is encrypted. Click the button below to decrypt.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-center gap-2">
+                                    <flux:button wire:click="$set('setDecryptionKey', true)" variant="primary">
+                                        Decrypt Data
+                                    </flux:button>
+                                    <flux:button wire:click="exportToPdf({{ $selectedApplication->id }})" variant="primary">
+                                        Export PDF
+                                    </flux:button>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($setDecryptionKey)
+                            <div class="space-y-6">
+                                <div>
+                                    <flux:heading size="lg">Enter Decryption Key</flux:heading>
+                                </div>
+
+                                <x-auth-session-status class="text-center" :status="session('status')" />
+
+                                <div>
+                                    <flux:input type="password" wire:model="decryptionPassword" placeholder="Enter Decryption Key" />
+                                </div>
+
+                                <div class="flex">
+                                    <flux:spacer />
+                                    <flux:button wire:click="decrypt" variant="primary">Decrypt</flux:button>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
                 @endif
-            </div>
-        @endif
+            @endif
+        </div>
     </flux:modal>
 
     <flux:modal name="decline-form" class="md:w-1/2" wire:model.self="showDeclineForm">

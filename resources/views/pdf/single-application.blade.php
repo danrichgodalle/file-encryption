@@ -242,6 +242,8 @@
         </div>
 
         <div class="detail-row">
+
+            <div class="section-title">Photo</div>
         
             <span>
                 {{ $application->photo }}
@@ -249,9 +251,20 @@
         </div>
 
         <div class="detail-row">
+
+            <div class="section-title">Sketch</div>
    
             <span>
                 {{ $application->sketch }}
+            </span>
+        </div>
+
+        <div class="detail-row">
+
+            <div class="section-title">Signature</div>
+   
+            <span>
+                {{ $application->signature }}
             </span>
         </div>
     </div>

@@ -16,6 +16,8 @@ new class extends Component {
     public $declineReason = '';
     public $showDeclineForm = false;
     public $isDecrypted = false;
+    public $showSetEncryptionKey = false;
+    public $newEncryptionKey = '';
 
     public function mount(): void
     {
@@ -28,13 +30,41 @@ new class extends Component {
         $this->setDecryptionKey = false;
         $this->isDecrypted = false;
         $this->decryptionPassword = '';
+        $this->showSetEncryptionKey = false;
+        $this->newEncryptionKey = '';
         
         Flux::modal('edit-profile')->show();
     }
 
+    public function showSetEncryptionKeyForm(): void
+    {
+        $this->showSetEncryptionKey = true;
+    }
+
+    public function setEncryptionKey(): void
+    {
+        if (empty($this->newEncryptionKey)) {
+            session()->flash('status', __('Please enter an encryption key.'));
+            return;
+        }
+
+        $this->selectedApplication->encryption_key = $this->newEncryptionKey;
+        $this->selectedApplication->save();
+        
+        $this->showSetEncryptionKey = false;
+        $this->newEncryptionKey = '';
+        
+        LivewireAlert::title('Success')
+            ->text('Encryption key set successfully')
+            ->success()
+            ->show();
+    }
+
     public function decrypt(): void
     {
-        if ($this->decryptionPassword === $this->defaultPassword) {
+        $encryptionKey = $this->selectedApplication->encryption_key ?? $this->defaultPassword;
+        
+        if ($this->decryptionPassword === $encryptionKey) {
             $this->isDecrypted = true;
         } else {
             session()->flash('status', __('Invalid decryption key.'));
@@ -288,15 +318,25 @@ new class extends Component {
                                         <div class="ml-3">
                                             <p class="text-sm text-yellow-700">
                                                 This data is encrypted. Click the button below to decrypt.
+                                                @if(!$selectedApplication->encryption_key)
+                                                    You can also set a custom encryption key for this application.
+                                                @endif
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div class="flex justify-center gap-2">
-                                    <flux:button wire:click="$set('setDecryptionKey', true)" variant="primary">
-                                        Decrypt Data
-                                    </flux:button>
+                                    @if($selectedApplication->encryption_key)
+                                        <flux:button wire:click="$set('setDecryptionKey', true)" variant="primary">
+                                            Decrypt Data
+                                        </flux:button>
+                                    @endif
+                                    @if(!$selectedApplication->encryption_key)
+                                        <flux:button wire:click="showSetEncryptionKeyForm" variant="primary">
+                                            Set Encryption Key
+                                        </flux:button>
+                                    @endif
                                     <flux:button wire:click="exportToPdf({{ $selectedApplication->id }})" variant="primary">
                                         Export PDF
                                     </flux:button>
@@ -308,6 +348,11 @@ new class extends Component {
                             <div class="space-y-6">
                                 <div>
                                     <flux:heading size="lg">Enter Decryption Key</flux:heading>
+                                    @if($selectedApplication->encryption_key)
+                                        <flux:subheading>Use the custom encryption key set for this application.</flux:subheading>
+                                    @else
+                                        <flux:subheading>Use the default decryption key.</flux:subheading>
+                                    @endif
                                 </div>
 
                                 <x-auth-session-status class="text-center" :status="session('status')" />
@@ -319,6 +364,26 @@ new class extends Component {
                                 <div class="flex">
                                     <flux:spacer />
                                     <flux:button wire:click="decrypt" variant="primary">Decrypt</flux:button>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($showSetEncryptionKey)
+                            <div class="space-y-6">
+                                <div>
+                                    <flux:heading size="lg">Set Custom Encryption Key</flux:heading>
+                                    <flux:subheading>Set a unique encryption key for this application.</flux:subheading>
+                                </div>
+
+                                <x-auth-session-status class="text-center" :status="session('status')" />
+
+                                <div>
+                                    <flux:input type="password" wire:model="newEncryptionKey" placeholder="Enter New Encryption Key" />
+                                </div>
+
+                                <div class="flex justify-end gap-2">
+                                    <flux:button wire:click="$set('showSetEncryptionKey', false)" variant="primary">Cancel</flux:button>
+                                    <flux:button wire:click="setEncryptionKey" variant="primary">Set Key</flux:button>
                                 </div>
                             </div>
                         @endif

@@ -37,6 +37,7 @@ class Application extends Model
         'signature',
         'decline_reason',
         'user_id',
+        'encryption_key',
     ];
 
     protected $casts = [

@@ -49,6 +49,7 @@ new class extends Component {
     public $data;
     public $photo;
     public $sketch;
+    public $signature;
     public bool $test = true;
     public $signaturePath;
     public $signatureData;
@@ -83,7 +84,7 @@ new class extends Component {
            $this->date_of_birth = '1990-01-01';
            $this->tel_no = '1234567890';
            $this->cell_no = '1234567890';
-           $this->length_of_stay = '1 year';
+           $this->length_of_stay = '1';
            $this->ownership = 'Own';
            $this->rent_amount = '1000';
            $this->place_of_birth = 'Anytown, USA';
@@ -192,7 +193,8 @@ new class extends Component {
             ],
             4 => [
                 'photo' => ['required', 'image', 'max:1024'],
-                'sketch' => ['required', 'image', 'max:1024']
+                'sketch' => ['required', 'image', 'max:1024'],
+                'signature' => ['required', 'image', 'max:1024']
             ],
             default => [],
         };
@@ -200,7 +202,6 @@ new class extends Component {
 
     public function saveToDb()
     {
-    
         $this->validate($this->getStepValidationRules());
         $encryptedData = [
             'name' => (isset($this->name)) ? Crypt::encrypt($this->name) : null,
@@ -243,18 +244,10 @@ new class extends Component {
             $encryptedData['sketch'] = Crypt::encrypt($uniqueSketchFileName);
         }
 
-        if($this->signatureData) {
-            // Convert base64 to image
-            $image = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $this->signatureData));
-            
-            // Generate unique filename
-            $signatureFileName = 'signature_' . time() . '_' . uniqid() . '.png';
-            
-            // Save the image
-            Storage::disk('public')->put('signatures/' . $signatureFileName, $image);
-            
-            // Store encrypted filename
-            $encryptedData['signature'] = Crypt::encrypt($signatureFileName);
+        if($this->signature) {
+            $uniqueSignatureFileName = 'signature_' . time() . '_' . uniqid() . '.' . $this->signature->getClientOriginalExtension();
+            $this->signature->storeAs('signatures', $uniqueSignatureFileName, 'public');
+            $encryptedData['signature'] = Crypt::encrypt($uniqueSignatureFileName);
         }
 
         // Add user_id to the encrypted data
@@ -269,7 +262,7 @@ new class extends Component {
                 'text' => 'You have successfully submitted your application',
             ]);
             
-            $this->redirectRoute('user.signature', ['id' => $created->id]);
+            return $this->redirect(route('user.apply-loan'), navigate: true);
         }
     }
 }; ?>
@@ -339,17 +332,17 @@ new class extends Component {
                 </div>
                 <div class="col-span-1">
                     <label for="tel_no" class="block font-bold text-gray-700 text-sm">Telephone No.:</label>
-                    <input type="text" id="tel_no" wire:model="tel_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" id="tel_no" wire:model="tel_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <flux:error name="tel_no"/>
                 </div>
                 <div class="col-span-1">
                     <label for="cell_no" class="block font-bold text-gray-700 text-sm">Cell No.:</label>
-                    <input type="text" id="cell_no" wire:model="cell_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" id="cell_no" wire:model="cell_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <flux:error name="cell_no"/>
                 </div>
                 <div class="col-span-1">
                     <label for="length_of_stay" class="block font-bold text-gray-700 text-sm">Length of Stay:</label>
-                    <input type="text" id="length_of_stay" wire:model="length_of_stay" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" id="length_of_stay" wire:model="length_of_stay" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <flux:error name="length_of_stay"/>
                 </div>
                 <div class="col-span-1">
@@ -384,7 +377,11 @@ new class extends Component {
                 </div>
                 <div class="col-span-1">
                     <label for="civil_status" class="block font-bold text-gray-700 text-sm">Civil Status:</label>
-                    <input type="text" id="civil_status" wire:model="civil_status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select id="civil_status" wire:model="civil_status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select Civil Status</option>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                    </select>
                     <flux:error name="civil_status"/>
                 </div>
                 <div class="col-span-1">
@@ -563,16 +560,19 @@ new class extends Component {
                         <img src="{{ $photo->temporaryUrl() }}" alt="ID Preview" class="max-w-xs border rounded-lg">
                     </div>
                 @endif
-                {{-- <div class="mt-4">
-                    <h3 class="text-lg font-medium text-gray-900">Signature</h3>
-                    <p class="mt-1 text-sm text-gray-600">Please provide your signature below.</p>
-                    
-                    <div class="mt-4" wire:ignore.self>
-                        <livewire:signature-pad />
 
-                        <flux:error name="signatureData"/>
-                    </div>
-                </div> --}}
+                <div class="mt-6">
+                    <label for="signature" class="block font-bold text-gray-700 mb-2">Upload Signature:</label>
+                    <input type="file" id="signature" wire:model="signature" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <flux:error name="signature"/>
+                    
+                    @if($signature)
+                        <div class="mt-4">
+                            <h3 class="text-lg font-semibold mb-2">Signature Preview</h3>
+                            <img src="{{ $signature->temporaryUrl() }}" alt="Signature Preview" class="max-w-xs border rounded-lg">
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     @endif

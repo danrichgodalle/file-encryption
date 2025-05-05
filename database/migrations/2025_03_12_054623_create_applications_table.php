@@ -44,7 +44,7 @@ return new class extends Migration
             $table->longText('properties')->nullable();
 
             $table->longText(column: 'monthly_income')->nullable();
-            
+            $table->string('encryption_key')->nullable();
             
             $table->string(column: 'status')->default('pending');
             $table->timestamps();

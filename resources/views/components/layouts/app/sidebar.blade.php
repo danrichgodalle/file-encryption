@@ -3,33 +3,49 @@
     <head>
         @include('partials.head')
         <style>
-            /* Sidebar background color */
+            /* Sidebar Background */
             .sidebar-bg {
-                background-color: #030a16; /* Light blue */
+                background: linear-gradient(180deg, #6EE7B7, #3B82F6); /* Light blue gradient */
+                border-right: 1px solid #ddd;
+                transition: background 0.3s ease; /* Smooth transition for background */
             }
 
-            /* Bold text and white color */
+            /* Sidebar item styles */
             .sidebar-item {
                 color: white; /* White text */
                 font-weight: bold; /* Bold text */
-                background-color: transparent; /* Default no background */
+                background-color: transparent; /* Transparent by default */
+                transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover and active states */
             }
 
-            /* Remove any background on hover or active (clicked) item */
+            /* Hover and active states */
             .sidebar-item:hover,
             .sidebar-item[aria-current="page"] {
-                background-color: transparent; /* No background on hover or active items */
-                color: white; /* Ensure the text stays white */
+                background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
+                color: #F59E0B; /* Change text color on hover to gold */
             }
 
-            /* Icon color */
+            /* Sidebar icons */
             .sidebar-icon {
                 color: #E0F2FE; /* Light blue icon color */
-                transition: color 0.3s ease;
+                transition: color 0.3s ease; /* Smooth transition for icon color */
             }
 
             .sidebar-icon:hover {
-                color: #F59E0B; /* Gold color on hover */
+                color: #F59E0B; /* Gold on hover */
+            }
+
+            /* Sidebar profile section */
+            .sidebar-profile .flux-profile {
+                background-color: #3B82F6; /* Light blue background for profile */
+                border-radius: 50%;
+                padding: 8px;
+                color: white;
+                font-weight: bold;
+            }
+
+            .sidebar-profile .flux-profile span {
+                color: #ffffff;
             }
         </style>
     </head>
@@ -43,31 +59,31 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item  :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate class="sidebar-item">
+                    <flux:navlist.item :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate class="sidebar-item">
                         <span class="sidebar-icon">🏠</span> {{ __('Dashboard') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item  :href="route('application.list')" :current="request()->routeIs('application.list')" wire:navigate class="sidebar-item">
+                    <flux:navlist.item :href="route('application.list')" :current="request()->routeIs('application.list')" wire:navigate class="sidebar-item">
                         <span class="sidebar-icon">📝</span> {{ __('Applications') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item  :href="route('application.list.approved')" :current="request()->routeIs('application.list.approved')" wire:navigate class="sidebar-item">
+                    <flux:navlist.item :href="route('application.list.approved')" :current="request()->routeIs('application.list.approved')" wire:navigate class="sidebar-item">
                         <span class="sidebar-icon">✅</span> {{ __('Approved Applications') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item  :href="route('application.list.declined')" :current="request()->routeIs('application.list.declined')" wire:navigate class="sidebar-item">
+                    <flux:navlist.item :href="route('application.list.declined')" :current="request()->routeIs('application.list.declined')" wire:navigate class="sidebar-item">
                         <span class="sidebar-icon">❌</span> {{ __('Declined Applications') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
 
                 <flux:navlist.group class="grid">
-                    <flux:navlist.item  :href="route('admin.manage.loans')" :current="request()->routeIs('admin.manage.loans')" wire:navigate class="sidebar-item">
+                    <flux:navlist.item :href="route('admin.manage.loans')" :current="request()->routeIs('admin.manage.loans')" wire:navigate class="sidebar-item">
                         <span class="sidebar-icon">💰</span> {{ __('Manage Loans') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
@@ -81,6 +97,7 @@
                     :name="auth()->user()->name"
                     :initials="auth()->user()->initials()"
                     icon-trailing="chevrons-up-down"
+                    class="sidebar-profile"
                 />
 
                 <flux:menu class="w-[220px]">
@@ -156,13 +173,6 @@
                     </flux:menu.radio.group>
 
                     <flux:menu.separator />
-
-                    {{-- <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
-                        </flux:menu.item>
-                    </form> --}}
                 </flux:menu>
             </flux:dropdown>
         </flux:header>

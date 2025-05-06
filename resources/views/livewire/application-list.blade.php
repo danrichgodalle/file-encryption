@@ -167,7 +167,7 @@ new class extends Component {
         $application->save();
 
 
-        Flux::modal('decline-form')->close();
+        Flux::modal('edit-profile')->close();
         $this->declineReason = '';
         $this->showDeclineForm = false;
 
@@ -257,7 +257,7 @@ new class extends Component {
 
                         <div class="flex">
                             <div class="w-1/2">
-                                <flux:heading size="lg">Cell No</flux:heading>
+                                <flux:heading size="lg">Mobile No</flux:heading>
                                 <flux:subheading>{{ $selectedApplication->cell_no ? decrypt($selectedApplication->cell_no) : '' }}</flux:subheading>
                             </div>
                             <div class="w-1/2">

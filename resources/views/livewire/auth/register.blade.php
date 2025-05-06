@@ -34,7 +34,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         Auth::login($user);
 
-        $this->redirectIntended(route('user.apply-loan', absolute: false), navigate: true);
+        $this->redirectIntended(route('verification.notice', absolute: false), navigate: true);
     }
 }; ?>
 

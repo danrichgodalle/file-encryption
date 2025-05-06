@@ -336,7 +336,7 @@ new class extends Component {
                     <flux:error name="tel_no"/>
                 </div>
                 <div class="col-span-1">
-                    <label for="cell_no" class="block font-bold text-gray-700 text-sm">Cell No.:</label>
+                    <label for="cell_no" class="block font-bold text-gray-700 text-sm">Mobile No.:</label>
                     <input type="number" id="cell_no" wire:model="cell_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <flux:error name="cell_no"/>
                 </div>

@@ -127,11 +127,11 @@
                 <span class="value">{{ $application->address }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Tel No:</span>
+                <span class="label">Telephone No:</span>
                 <span class="value">{{ $application->tel_no }}</span>
             </div>
             <div class="detail-row">
-                <span class="label">Cell No:</span>
+                <span class="label">Mobile No:</span>
                 <span class="value">{{ $application->cell_no }}</span>
             </div>
             <div class="detail-row">

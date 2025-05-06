@@ -109,11 +109,11 @@ new #[Layout('components.layouts.guest')] class extends Component {
                 :placeholder="__('')"
             />
 
-            {{-- @if (Route::has('password.request'))
+            @if (Route::has('password.request'))
                 <flux:link class="absolute right-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
                     {{ __('Forgot your password?') }}
                 </flux:link>
-            @endif --}}
+            @endif
         </div>
 
         <!-- Remember Me -->

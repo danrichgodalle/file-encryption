@@ -156,7 +156,7 @@ new class extends Component {
                             <p>{{ $selectedApplication->tel_no }}</p>
                         </div>
                         <div>
-                            <label class="font-medium text-gray-700">Cell Phone</label>
+                            <label class="font-medium text-gray-700">Mobile No.</label>
                             <p>{{ $selectedApplication->cell_no }}</p>
                         </div>
                         <div>

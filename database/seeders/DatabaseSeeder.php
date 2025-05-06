@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'), // Gamit ang bcrypt para secure
             'is_admin' => true,
+            'email_verified_at' => now(),
         ]);
 
         $normalUser = User::create([
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@gmail.com',
             'password' => bcrypt('password'), // Gamit ang bcrypt para secure
             'is_admin' => true,
+            'email_verified_at' => now(),
         ]);
 
         $adminRole = Role::firstOrCreate(['name' => 'admin']);

@@ -451,7 +451,7 @@ new class extends Component {
             </div>
     
             <div class="border border-gray-300 rounded-lg p-6 mb-6">
-                <h4 class="text-lg font-semibold text-gray-800 mb-4">C. Spouse (If Employed)</h4>
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">C. Spouse (If married)</h4>
                 <div class="grid grid-cols-2 gap-6">
                     <div>
                         <label for="spouse_employment" class="block font-bold text-gray-700">Employment:</label>

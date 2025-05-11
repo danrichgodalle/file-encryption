@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Crypt;
 use Livewire\Attributes\Validate;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Attributes\On;
+use Carbon\Carbon;
 
 
 new class extends Component {
@@ -34,9 +35,7 @@ new class extends Component {
     public string $position = '';
     public string $employer_name = '';
     public string $employer_address = '';
-    public string $nature_of_business = '';
-    public string $years_in_business = '';
-    public string $business_address = '';
+    public array $businesses = [];
     public string $spouse_employment = '';
     public string $spouse_position = '';
     public string $spouse_employer_name = '';
@@ -54,11 +53,13 @@ new class extends Component {
     public $signaturePath;
     public $signatureData;
 
-    // #[On('signature-saved')] 
-    // public function handleSignatureSaved($signature)
-    // {
-    //     $this->signatureData = $signature;
-    // }
+    public function updatedDateOfBirth()
+    {
+        if ($this->date_of_birth) {
+            $birthDate = Carbon::parse($this->date_of_birth);
+            $this->age = (string)$birthDate->age;
+        }
+    }
 
     public function mount()
     {
@@ -75,6 +76,10 @@ new class extends Component {
       
         $this->properties = [
             ['type' => '', 'make_model' => '', 'years_acquired' => '', 'estimated_cost' => '']
+        ];
+
+        $this->businesses = [
+            ['name' => '', 'nature' => '', 'years' => '', 'address' => '']
         ];
 
         if($this->test) {
@@ -96,9 +101,10 @@ new class extends Component {
            $this->position = 'Manager';
            $this->employer_name = 'John Doe';
            $this->employer_address = '123 Main St, Anytown, USA';
-           $this->nature_of_business = 'Business';
-           $this->years_in_business = '1';
-           $this->business_address = '123 Main St, Anytown, USA';
+           $this->businesses = [
+                ['name' => 'My Retail Store', 'nature' => 'Retail Store', 'years' => '5', 'address' => '123 Business St, Anytown, USA'],
+                ['name' => 'My Online Shop', 'nature' => 'Online Shop', 'years' => '2', 'address' => '456 E-commerce Ave, Anytown, USA']
+           ];
            $this->spouse_employment = 'Employed';
            $this->spouse_position = 'Manager';
            $this->spouse_employer_name = 'John Doe';
@@ -127,8 +133,16 @@ new class extends Component {
         $this->signaturePath = $filename;
     }
 
+    public function addBusiness()
+    {
+        $this->businesses[] = ['name' => '', 'nature' => '', 'years' => '', 'address' => ''];
+    }
 
-
+    public function removeBusiness($index)
+    {
+        unset($this->businesses[$index]);
+        $this->businesses = array_values($this->businesses);
+    }
 
     public function addProperties()
     {
@@ -164,9 +178,9 @@ new class extends Component {
                 'length_of_stay' => ['required', 'string'],
                 'ownership' => ['required', 'string'],
                 'rent_amount' => ['nullable', 'numeric'],
-                'date_of_birth' => ['required', 'string'],
+                'date_of_birth' => ['required', 'date', 'before:1996-01-01'],
                 'place_of_birth' => ['required', 'string'],
-                'age' => ['required', 'integer'],
+                'age' => ['required', 'string'],
                 'civil_status' => ['required', 'string'],
                 'dependents' => ['required', 'integer'],
                 'contact_person' => ['required', 'string'],
@@ -176,9 +190,11 @@ new class extends Component {
                 'position' => ['nullable', 'string'],
                 'employer_name' => ['nullable', 'string'],
                 'employer_address' => ['nullable', 'string'],
-                'nature_of_business' => ['nullable', 'string'],
-                'years_in_business' => ['nullable', 'integer'],
-                'business_address' => ['nullable', 'string'],
+                'businesses' => ['nullable', 'array'],
+                'businesses.*.name' => ['required', 'string'],
+                'businesses.*.nature' => ['required', 'string'],
+                'businesses.*.years' => ['required', 'integer'],
+                'businesses.*.address' => ['required', 'string'],
                 'spouse_employment' => ['nullable', 'string'],
                 'spouse_position' => ['nullable', 'string'],
                 'spouse_employer_name' => ['nullable', 'string'],
@@ -222,9 +238,7 @@ new class extends Component {
             'position' => (isset($this->position)) ? Crypt::encrypt($this->position) : null,
             'employer_name' => (isset($this->employer_name)) ? Crypt::encrypt($this->employer_name) : null,
             'employer_address' => (isset($this->employer_address)) ? Crypt::encrypt($this->employer_address) : null,
-            'nature_of_business' => (isset($this->nature_of_business)) ? Crypt::encrypt($this->nature_of_business) : null,
-            'years_in_business' => (isset($this->years_in_business)) ? Crypt::encrypt($this->years_in_business) : null,
-            'business_address' => (isset($this->business_address)) ? Crypt::encrypt($this->business_address) : null,
+            'businesses' => (isset($this->businesses) && count($this->businesses) > 0) ? Crypt::encrypt(json_encode($this->businesses)) : null,
             'spouse_employment' => (isset($this->spouse_employment)) ? Crypt::encrypt($this->spouse_employment) : null,
             'spouse_position' => (isset($this->spouse_position)) ? Crypt::encrypt($this->spouse_position) : null,
             'spouse_employer_name' => (isset($this->spouse_employer_name)) ? Crypt::encrypt($this->spouse_employer_name) : null,
@@ -362,7 +376,7 @@ new class extends Component {
                 </div>
                 <div class="col-span-1">
                     <label for="date_of_birth" class="block font-bold text-gray-700 text-sm">Date of Birth:</label>
-                    <input type="date" id="date_of_birth" wire:model="date_of_birth" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="date" id="date_of_birth" wire:model.live="date_of_birth" max="1995-12-31" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <flux:error name="date_of_birth"/>
                 </div>
                 <div class="col-span-1">
@@ -372,7 +386,7 @@ new class extends Component {
                 </div>
                 <div class="col-span-1">
                     <label for="age" class="block font-bold text-gray-700 text-sm">Age:</label>
-                    <input type="number" id="age" wire:model="age" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" id="age" wire:model="age" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100">
                     <flux:error name="age"/>
                 </div>
                 <div class="col-span-1">
@@ -430,24 +444,46 @@ new class extends Component {
             </div>
     
             <div class="border border-gray-300 rounded-lg p-6 mb-6">
-                <h4 class="text-lg font-semibold text-gray-800 mb-4">B. Business</h4>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="col-span-2">
-                        <label for="nature_of_business" class="block font-bold text-gray-700">Nature of Business:</label>
-                        <input type="text" id="nature_of_business" wire:model="nature_of_business" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <flux:error name="nature_of_business"/>
-                    </div>
-                    <div>
-                        <label for="years_in_business" class="block font-bold text-gray-700">No. of Years in Business:</label>
-                        <input type="number" id="years_in_business" wire:model="years_in_business" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <flux:error name="years_in_business"/>
-                    </div>
-                    <div class="col-span-2">
-                        <label for="business_address" class="block font-bold text-gray-700">Business Address:</label>
-                        <input type="text" id="business_address" wire:model="business_address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <flux:error name="business_address"/>
-                    </div>
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-lg font-semibold text-gray-800">B. Business</h4>
+                    <button wire:click.prevent="addBusiness" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">
+                        Add Business
+                    </button>
                 </div>
+
+                @foreach($businesses as $index => $business)
+                    <div class="border-2 border-gray-200 rounded-lg p-4 mb-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <h5 class="text-md font-semibold text-gray-700">Business #{{ $index + 1 }}</h5>
+                            <button wire:click.prevent="removeBusiness({{ $index }})" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-200">
+                                Remove
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="col-span-2">
+                                <label for="businesses.{{ $index }}.name" class="block font-bold text-gray-700">Business Name:</label>
+                                <input type="text" id="businesses.{{ $index }}.name" wire:model="businesses.{{ $index }}.name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <flux:error name="businesses.{{ $index }}.name"/>
+                            </div>
+                            <div class="col-span-2">
+                                <label for="businesses.{{ $index }}.nature" class="block font-bold text-gray-700">Nature of Business:</label>
+                                <input type="text" id="businesses.{{ $index }}.nature" wire:model="businesses.{{ $index }}.nature" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <flux:error name="businesses.{{ $index }}.nature"/>
+                            </div>
+                            <div class="col-span-1">
+                                <label for="businesses.{{ $index }}.years" class="block font-bold text-gray-700">No. of Years in Business:</label>
+                                <input type="number" id="businesses.{{ $index }}.years" wire:model="businesses.{{ $index }}.years" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <flux:error name="businesses.{{ $index }}.years"/>
+                            </div>
+                            <div class="col-span-2">
+                                <label for="businesses.{{ $index }}.address" class="block font-bold text-gray-700">Business Address:</label>
+                                <input type="text" id="businesses.{{ $index }}.address" wire:model="businesses.{{ $index }}.address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <flux:error name="businesses.{{ $index }}.address"/>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
     
             <div class="border border-gray-300 rounded-lg p-6 mb-6">
@@ -529,49 +565,149 @@ new class extends Component {
         </div>
     @endif
 
-    <!-- Step 4: Upload Documents -->
+    <!-- Step 4: Documents Upload -->
     @if($currentStep === 4)
         <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-2xl font-bold mb-6">Upload Documents</h2>
+            <h2 class="text-2xl font-bold mb-6">Required Documents</h2>
             
-            <div class="space-y-6">
-                <div>
-                    <label for="sketch" class="block font-bold text-gray-700 mb-2">Upload Sketch of Location of Residence/Business:</label>
-                    <input type="file" id="sketch" wire:model="sketch" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <flux:error name="sketch"/>
-                </div>
-
-                <div>
-                    <label for="photo" class="block font-bold text-gray-700 mb-2">Upload ID:</label>
-                    <input type="file" id="photo" wire:model="photo" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <flux:error name="photo"/>
-                </div>
-
-                @if($sketch)
-                    <div class="mt-4">
-                        <h3 class="text-lg font-semibold mb-2">Sketch Preview</h3>
-                        <img src="{{ $sketch->temporaryUrl() }}" alt="Sketch Preview" class="max-w-xs border rounded-lg">
-                    </div>
-                @endif
-
-                @if($photo)
-                    <div class="mt-4">
-                        <h3 class="text-lg font-semibold mb-2">ID Preview</h3>
-                        <img src="{{ $photo->temporaryUrl() }}" alt="ID Preview" class="max-w-xs border rounded-lg">
-                    </div>
-                @endif
-
-                <div class="mt-6">
-                    <label for="signature" class="block font-bold text-gray-700 mb-2">Upload Signature:</label>
-                    <input type="file" id="signature" wire:model="signature" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <flux:error name="signature"/>
-                    
-                    @if($signature)
-                        <div class="mt-4">
-                            <h3 class="text-lg font-semibold mb-2">Signature Preview</h3>
-                            <img src="{{ $signature->temporaryUrl() }}" alt="Signature Preview" class="max-w-xs border rounded-lg">
+            <!-- Photo Upload Section -->
+            <div class="mb-8">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Applicant's Photo</h4>
+                <div class="flex items-start space-x-6">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input 
+                                type="file" 
+                                wire:model="photo" 
+                                accept="image/*"
+                                class="hidden" 
+                                id="photo-upload"
+                            >
+                            <label 
+                                for="photo-upload" 
+                                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all duration-200"
+                            >
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500">
+                                        <span class="font-semibold">Click to upload</span> or drag and drop
+                                    </p>
+                                    <p class="text-xs text-gray-500">
+                                        2x2 ID Photo (PNG, JPG up to 1MB)
+                                    </p>
+                                </div>
+                                @if($photo)
+                                    <img 
+                                        src="{{ $photo->temporaryUrl() }}" 
+                                        class="absolute inset-0 w-full h-full object-cover rounded-lg"
+                                        alt="Preview"
+                                    >
+                                @endif
+                            </label>
                         </div>
-                    @endif
+                        @error('photo')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        <p class="mt-2 text-xs text-gray-500">
+                            Please upload a recent 2x2 ID photo with white background. Make sure your face is clearly visible.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sketch Upload Section -->
+            <div class="mb-8">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Location Sketch</h4>
+                <div class="flex items-start space-x-6">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input 
+                                type="file" 
+                                wire:model="sketch" 
+                                accept="image/*"
+                                class="hidden" 
+                                id="sketch-upload"
+                            >
+                            <label 
+                                for="sketch-upload" 
+                                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all duration-200"
+                            >
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500">
+                                        <span class="font-semibold">Upload sketch</span> of your location
+                                    </p>
+                                    <p class="text-xs text-gray-500">
+                                        Clear image of location sketch (PNG, JPG up to 1MB)
+                                    </p>
+                                </div>
+                                @if($sketch)
+                                    <img 
+                                        src="{{ $sketch->temporaryUrl() }}" 
+                                        class="absolute inset-0 w-full h-full object-cover rounded-lg"
+                                        alt="Preview"
+                                    >
+                                @endif
+                            </label>
+                        </div>
+                        @error('sketch')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        <p class="mt-2 text-xs text-gray-500">
+                            Please provide a clear sketch or map showing directions to your residence/business location.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Digital Signature Section -->
+            <div>
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Digital Signature</h4>
+                <div class="flex items-start space-x-6">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input 
+                                type="file" 
+                                wire:model="signature" 
+                                accept="image/*"
+                                class="hidden" 
+                                id="signature-upload"
+                            >
+                            <label 
+                                for="signature-upload" 
+                                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all duration-200"
+                            >
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500">
+                                        <span class="font-semibold">Upload your signature</span>
+                                    </p>
+                                    <p class="text-xs text-gray-500">
+                                        Clear image of your signature (PNG, JPG up to 1MB)
+                                    </p>
+                                </div>
+                                @if($signature)
+                                    <img 
+                                        src="{{ $signature->temporaryUrl() }}" 
+                                        class="absolute inset-0 w-full h-full object-cover rounded-lg"
+                                        alt="Preview"
+                                    >
+                                @endif
+                            </label>
+                        </div>
+                        @error('signature')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        <p class="mt-2 text-xs text-gray-500">
+                            Please provide a clear image of your signature on white paper.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

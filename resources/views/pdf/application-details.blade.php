@@ -193,6 +193,39 @@
         </div>
 
         <div class="section">
+            <div class="section-title">Businesses</div>
+            <div class="detail-row">
+                <span class="value">
+                    @if($application->businesses)
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Business Name</th>
+                                    <th>Nature of Business</th>
+                                    <th>Years in Business</th>
+                                    <th>Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (json_decode($application->businesses, true) as $property)
+                                    <tr>
+                                        <td>{{ $property['name'] }}</td>
+                                        <td>{{ $property['nature'] }}</td>
+                                        <td>{{ $property['years'] }}</td>
+                                        <td>{{ $property['address'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <span class="no-data">No properties listed</span>
+                    @endif
+                </span>
+            </div>
+        </div>
+
+
+        <div class="section">
             <div class="section-title">Spouse Employment Information</div>
             <div class="detail-row">
                 <span class="label">Spouse Employment:</span>

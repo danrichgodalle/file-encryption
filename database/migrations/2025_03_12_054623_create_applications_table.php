@@ -36,6 +36,8 @@ return new class extends Migration
             $table->longText(column: 'employer_name')->nullable();
             $table->longText(column: 'employer_address')->nullable();
 
+    
+
             $table->longText(column: 'spouse_employment')->nullable();
             $table->longText(column: 'spouse_position')->nullable();
             $table->longText(column: 'spouse_employer_name')->nullable();
@@ -46,8 +48,13 @@ return new class extends Migration
             $table->longText(column: 'monthly_income')->nullable();
             $table->string('encryption_key')->nullable();
             
-            $table->string(column: 'status')->default('pending');
             $table->timestamps();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('status')->default('pending');
+            $table->string('decline_reason')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('sketch')->nullable();
+            $table->string('signature')->nullable();
         });
     }
 

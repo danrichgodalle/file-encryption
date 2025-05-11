@@ -52,8 +52,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('status')->default('pending');
             $table->string('decline_reason')->nullable();
-            $table->string('photo')->nullable();
-            $table->string('sketch')->nullable();
             $table->string('signature')->nullable();
         });
     }

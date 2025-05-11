@@ -49,7 +49,6 @@ return new class extends Migration
             $table->string('encryption_key')->nullable();
             
             $table->timestamps();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('status')->default('pending');
         });
     }

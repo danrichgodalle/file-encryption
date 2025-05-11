@@ -371,7 +371,7 @@ new class extends Component {
                 </div>
                 <div class="col-span-2">
                     <label for="rent_amount" class="block font-bold text-gray-700 text-sm">Rent Amount (if Rented):</label>
-                    <input type="text" id="rent_amount" wire:model="rent_amount" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" id="rent_amount" wire:model="rent_amount" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <flux:error name="rent_amount"/>
                 </div>
                 <div class="col-span-1">

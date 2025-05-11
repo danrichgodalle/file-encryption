@@ -51,7 +51,6 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('status')->default('pending');
-            $table->string('decline_reason')->nullable();
             $table->string('signature')->nullable();
         });
     }

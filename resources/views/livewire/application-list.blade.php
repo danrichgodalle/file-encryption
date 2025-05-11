@@ -5,6 +5,9 @@ use App\Models\Application;
 use Illuminate\Support\Facades\Crypt;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Carbon\Carbon;
+use Livewire\Attributes\Reactive;
+use Livewire\Attributes\Live;
 
 
 new class extends Component {
@@ -18,10 +21,73 @@ new class extends Component {
     public $isDecrypted = false;
     public $showSetEncryptionKey = false;
     public $newEncryptionKey = '';
+    
+    #[Live]
+    public $filterType = 'all';
+    #[Live]
+    public $startDate = '';
+    #[Live]
+    public $endDate = '';
+    #[Live]
+    public $search = '';
 
     public function mount(): void
     {
-       $this->applications = Application::whereStatus('pending')->get();
+        $this->applyFilters();
+    }
+
+    public function updatedFilterType(): void 
+    {
+        $this->applyFilters();
+    }
+
+    public function updatedStartDate(): void
+    {
+        if ($this->filterType === 'custom') {
+            $this->applyFilters();
+        }
+    }
+
+    public function updatedEndDate(): void
+    {
+        if ($this->filterType === 'custom') {
+            $this->applyFilters();
+        }
+    }
+
+    public function updatedSearch(): void
+    {
+        $this->applyFilters();
+    }
+
+    public function applyFilters(): void
+    {
+        $query = Application::whereStatus('pending');
+
+        switch ($this->filterType) {
+            case 'this_month':
+                $query->whereMonth('created_at', Carbon::now()->month)
+                      ->whereYear('created_at', Carbon::now()->year);
+                break;
+            case 'last_month':
+                $query->whereMonth('created_at', Carbon::now()->subMonth()->month)
+                      ->whereYear('created_at', Carbon::now()->subMonth()->year);
+                break;
+            case 'custom':
+                if ($this->startDate && $this->endDate) {
+                    $query->whereBetween('created_at', [
+                        Carbon::parse($this->startDate)->startOfDay(),
+                        Carbon::parse($this->endDate)->endOfDay()
+                    ]);
+                }
+                break;
+        }
+
+        if ($this->search) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        $this->applications = $query->get();
     }
 
     public function selectApplication($id): void
@@ -103,6 +169,7 @@ new class extends Component {
         
 
         $application->properties = $application->properties ?  decrypt($application->properties) : '';
+        $application->businesses = $application->businesses ?  decrypt($application->businesses) : '';
         $application->photo = $application->photo ?  decrypt($application->photo) : '';
         $application->sketch = $application->sketch ?  decrypt($application->sketch) : '';
         $application->signature = $application->signature ?  decrypt($application->signature) : '';
@@ -159,6 +226,7 @@ new class extends Component {
         
 
         $application->properties = $application->properties ?  decrypt($application->properties) : '';
+        $application->businesses = $application->businesses ?  decrypt($application->businesses) : '';
         $application->photo = $application->photo ?  decrypt($application->photo) : '';
         $application->sketch = $application->sketch ?  decrypt($application->sketch) : '';
         $application->signature = $application->signature ?  decrypt($application->signature) : '';
@@ -203,7 +271,96 @@ new class extends Component {
 }; ?>
 
 <div>
-    <div class="grid grid-cols-4 gap-6 p-6">
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+        <div class="space-y-4">
+            <!-- Search and Filter Header -->
+            {{-- <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-700">Search & Filters</h2>
+                <button 
+                    wire:click="applyFilters"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                >
+                    Apply Filters
+                </button>
+            </div> --}}
+
+            <!-- Search Bar -->
+            {{-- <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <input 
+                    type="text" 
+                    wire:model.live="search"
+                    placeholder="Search applications..." 
+                    class="pl-10 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                >
+            </div> --}}
+
+            <!-- Filter Controls -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date Filter</label>
+                    <select 
+                        wire:model.live="filterType"
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                    >
+                        <option value="all">All Time</option>
+                        <option value="this_month">This Month</option>
+                        <option value="last_month">Last Month</option>
+                        <option value="custom">Custom Date Range</option>
+                    </select>
+                </div>
+
+                @if($filterType === 'custom')
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                        <input 
+                            type="date" 
+                            wire:model.live="startDate"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                        <input 
+                            type="date" 
+                            wire:model.live="endDate"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+                        >
+                    </div>
+                @endif
+            </div>
+
+            <!-- Active Filters Display -->
+            <div class="flex flex-wrap gap-2 pt-2">
+                @if($filterType !== 'all')
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                        {{ ucfirst(str_replace('_', ' ', $filterType)) }}
+                        <button wire:click="$set('filterType', 'all')" class="ml-2 text-blue-600 hover:text-blue-900">
+                            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </span>
+                @endif
+                @if($search)
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                        Search: "{{ $search }}"
+                        <button wire:click="$set('search', '')" class="ml-2 text-blue-600 hover:text-blue-900">
+                            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </span>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         @foreach($applications as $application)
             <div class="flex flex-col items-center cursor-pointer" wire:click="selectApplication({{ $application->id }})">
                 <!-- Folder Icon -->
@@ -235,33 +392,33 @@ new class extends Component {
                     <div class="space-y-6">
                         <div class="flex">
                             <div class="w-1/2">
-                                <flux:heading size="lg">Name</flux:heading>
+                                <flux:heading size="lg">{{ decrypt(encrypt('Name')) }}</flux:heading>
                                 <flux:subheading>{{ $selectedApplication->name ? decrypt($selectedApplication->name) : '' }}</flux:subheading>
                             </div>
                             <div class="w-1/2">
-                                <flux:heading size="lg">Nick Name</flux:heading>
+                                <flux:heading size="lg">{{ decrypt(encrypt('Nick Name')) }}</flux:heading>
                                 <flux:subheading>{{ $selectedApplication->nick_name ? decrypt($selectedApplication->nick_name) : '' }}</flux:subheading>
                             </div>
                         </div>
 
                         <div class="flex">
                             <div class="w-1/2">
-                                <flux:heading size="lg">Address</flux:heading>
+                                <flux:heading size="lg">{{ decrypt(encrypt('Address')) }}</flux:heading>
                                 <flux:subheading>{{ $selectedApplication->address ? decrypt($selectedApplication->address) : '' }}</flux:subheading>
                             </div>
                             <div class="w-1/2">
-                                <flux:heading size="lg">Tel No</flux:heading>
+                                <flux:heading size="lg">{{ decrypt(encrypt('Tel No')) }}</flux:heading>
                                 <flux:subheading>{{ $selectedApplication->tel_no ? decrypt($selectedApplication->tel_no) : '' }}</flux:subheading>
                             </div>
                         </div>
 
                         <div class="flex">
                             <div class="w-1/2">
-                                <flux:heading size="lg">Mobile No</flux:heading>
+                                <flux:heading size="lg">{{ decrypt(encrypt('Mobile No')) }}</flux:heading>
                                 <flux:subheading>{{ $selectedApplication->cell_no ? decrypt($selectedApplication->cell_no) : '' }}</flux:subheading>
                             </div>
                             <div class="w-1/2">
-                                <flux:heading size="lg">Length of Stay</flux:heading>
+                                <flux:heading size="lg">{{ decrypt(encrypt('Length of Stay')) }}</flux:heading>
                                 <flux:subheading>{{ $selectedApplication->length_of_stay ? decrypt($selectedApplication->length_of_stay) : '' }}</flux:subheading>
                             </div>
                         </div>
@@ -275,33 +432,33 @@ new class extends Component {
                     <div class="space-y-6">
                         <div class="flex">
                             <div class="w-1/2">
-                                <flux:heading size="lg">Name</flux:heading>
+                                <flux:heading size="lg">{{ Str::limit(encrypt('Name'), 20, '...') }}</flux:heading>
                                 <flux:subheading>{{ Str::limit($selectedApplication->name, 20, '...') }}</flux:subheading>
                             </div>
                             <div class="w-1/2">
-                                <flux:heading size="lg">Nick Name</flux:heading>
+                                <flux:heading size="lg">{{ Str::limit(encrypt('Nick Name'), 20, '...') }}</flux:heading>
                                 <flux:subheading>{{ Str::limit($selectedApplication->nick_name, 20, '...') }}</flux:subheading>
                             </div>
                         </div>
 
                         <div class="flex">
                             <div class="w-1/2">
-                                <flux:heading size="lg">Address</flux:heading>
+                                <flux:heading size="lg">{{ Str::limit(encrypt('Address'), 20, '...') }}</flux:heading>
                                 <flux:subheading>{{ Str::limit($selectedApplication->address, 20, '...') }}</flux:subheading>
                             </div>
                             <div class="w-1/2">
-                                <flux:heading size="lg">Tel No</flux:heading>
+                                <flux:heading size="lg">{{ Str::limit(encrypt('Tel No'), 20, '...') }}</flux:heading>
                                 <flux:subheading>{{ Str::limit($selectedApplication->tel_no, 20, '...') }}</flux:subheading>
                             </div>
                         </div>
 
                         <div class="flex">
                             <div class="w-1/2">
-                                <flux:heading size="lg">Cell No</flux:heading>
+                                <flux:heading size="lg">{{ Str::limit(encrypt('Cell No'), 20, '...') }}</flux:heading>
                                 <flux:subheading>{{ Str::limit($selectedApplication->cell_no, 20, '...') }}</flux:subheading>
                             </div>
                             <div class="w-1/2">
-                                <flux:heading size="lg">Length of Stay</flux:heading>
+                                <flux:heading size="lg">{{ Str::limit(encrypt('Length of Stay'), 20, '...') }}</flux:heading>
                                 <flux:subheading>{{ Str::limit($selectedApplication->length_of_stay, 20, '...') }}</flux:subheading>
                             </div>
                         </div>

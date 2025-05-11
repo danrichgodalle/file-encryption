@@ -26,6 +26,7 @@ class Application extends Model
         'position',
         'employer_name',
         'employer_address',
+        'businesses',
         'spouse_employment',
         'spouse_position',
         'spouse_employer_name',
@@ -42,6 +43,7 @@ class Application extends Model
 
     protected $casts = [
         'personal_properties' => 'array',
+        'businesses' => 'array',
     ];
 
     public function user(): BelongsTo

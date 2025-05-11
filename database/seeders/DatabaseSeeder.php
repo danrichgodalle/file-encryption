@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         // Admin user
         $adminUser = User::create([
-            'name' => 'Admin User',
+            'first_name' => 'Admin',
+            'last_name' => 'User',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'), // Gamit ang bcrypt para secure
             'is_admin' => true,
@@ -21,7 +22,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $normalUser = User::create([
-            'name' => 'Admin User',
+            'first_name' => 'Normal',
+            'last_name' => 'User',
             'email' => 'user@gmail.com',
             'password' => bcrypt('password'), // Gamit ang bcrypt para secure
             'is_admin' => true,

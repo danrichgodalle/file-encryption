@@ -47,7 +47,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
     <div class="flex flex-col items-center justify-between space-y-3">
         <flux:button wire:click="sendVerification" variant="primary" class="w-full">
-            {{ __('verification email sent you') }}
+            {{ __('Resend verification email') }}
         </flux:button>
 
         <flux:link class="text-sm cursor-pointer" wire:click="logout">

@@ -183,7 +183,7 @@ new class extends Component {
                 'length_of_stay_months' => ['nullable', 'integer', 'min:0', 'max:11'],
                 'length_of_stay_days' => ['nullable', 'integer', 'min:0', 'max:30'],
                 'ownership' => ['required', 'string'],
-                'rent_amount' => ['nullable', 'numeric'],
+                'rent_amount' => ['nullable', 'numeric', 'min:0'],
                 'date_of_birth' => ['required', 'date', 'before:1996-01-01'],
                 'place_of_birth' => ['required', 'string'],
                 'age' => ['required', 'string'],
@@ -412,7 +412,7 @@ new class extends Component {
                 </div>
                 <div class="col-span-2">
                     <label for="rent_amount" class="block font-bold text-gray-700 text-sm">Rent Amount (if Rented):</label>
-                    <input type="number" id="rent_amount" wire:model="rent_amount" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" id="rent_amount" wire:model="rent_amount" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     <flux:error name="rent_amount"/>
                 </div>
                 <div class="col-span-1">

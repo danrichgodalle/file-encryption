@@ -3,6 +3,7 @@
 use Livewire\Volt\Component;
 use App\Models\Loan;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Application;
 
 new class extends Component {
     public $amount = 3000;
@@ -16,7 +17,7 @@ new class extends Component {
         $this->hasActiveLoan = Auth::user()->loans()
             ->whereIn('status', ['pending', 'approved'])
             ->exists();
-        $this->hasApprovedApplication = Auth::user()->application?->status === 'approved';
+        $this->hasApprovedApplication = Application::where('user_id', Auth::user()->id)->where('status', 'approved')->exists();
     }
 
     public function applyLoan()

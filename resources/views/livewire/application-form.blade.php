@@ -22,7 +22,9 @@ new class extends Component {
     public string $date_of_birth = '';
     public string $tel_no = '';
     public string $cell_no = '';
-    public string $length_of_stay = '';
+    public string $length_of_stay_years = '';
+    public string $length_of_stay_months = '';
+    public string $length_of_stay_days = '';
     public string $ownership = '';
     public string $rent_amount = '';
     public string $place_of_birth = '';
@@ -89,7 +91,9 @@ new class extends Component {
            $this->date_of_birth = '1990-01-01';
            $this->tel_no = '1234567890';
            $this->cell_no = '1234567890';
-           $this->length_of_stay = '1';
+           $this->length_of_stay_years = '1';
+           $this->length_of_stay_months = '0';
+           $this->length_of_stay_days = '0';
            $this->ownership = 'Own';
            $this->rent_amount = '1000';
            $this->place_of_birth = 'Anytown, USA';
@@ -173,9 +177,11 @@ new class extends Component {
                 'name' => ['required', 'string'],
                 'nick_name' => ['nullable', 'string'],
                 'address' => ['required', 'string'],
-                'tel_no' => ['nullable', 'integer'],
-                'cell_no' => ['required', 'integer'],
-                'length_of_stay' => ['required', 'string'],
+                'tel_no' => ['nullable', 'integer', 'min:0'],
+                'cell_no' => ['required', 'integer', 'min:0'],
+                'length_of_stay_years' => ['nullable', 'integer', 'min:0'],
+                'length_of_stay_months' => ['nullable', 'integer', 'min:0', 'max:11'],
+                'length_of_stay_days' => ['nullable', 'integer', 'min:0', 'max:30'],
                 'ownership' => ['required', 'string'],
                 'rent_amount' => ['nullable', 'numeric'],
                 'date_of_birth' => ['required', 'date', 'before:1996-01-01'],
@@ -225,7 +231,15 @@ new class extends Component {
             'address' => (isset($this->address)) ? Crypt::encrypt($this->address) : null,
             'tel_no' => (isset($this->tel_no)) ? Crypt::encrypt($this->tel_no) : null,
             'cell_no' => (isset($this->cell_no)) ? Crypt::encrypt($this->cell_no) : null,
-            'length_of_stay' => (isset($this->length_of_stay)) ? Crypt::encrypt($this->length_of_stay) : null,
+            'length_of_stay' => (isset($this->length_of_stay_years) || isset($this->length_of_stay_months) || isset($this->length_of_stay_days)) 
+                ? Crypt::encrypt(
+                    trim(
+                        ($this->length_of_stay_years ? $this->length_of_stay_years . ' year' . ($this->length_of_stay_years != 1 ? 's' : '') : '') .
+                        ($this->length_of_stay_months ? ($this->length_of_stay_years ? ', ' : '') . $this->length_of_stay_months . ' month' . ($this->length_of_stay_months != 1 ? 's' : '') : '') .
+                        ($this->length_of_stay_days ? (($this->length_of_stay_years || $this->length_of_stay_months) ? ', ' : '') . $this->length_of_stay_days . ' day' . ($this->length_of_stay_days != 1 ? 's' : '') : '')
+                    )
+                ) 
+                : null,
             'ownership' => (isset($this->ownership)) ? Crypt::encrypt($this->ownership) : null,
             'rent_amount' => (isset($this->rent_amount)) ? Crypt::encrypt($this->rent_amount) : null,
             'date_of_birth' => (isset($this->date_of_birth)) ? Crypt::encrypt($this->date_of_birth) : null,
@@ -346,18 +360,45 @@ new class extends Component {
                 </div>
                 <div class="col-span-1">
                     <label for="tel_no" class="block font-bold text-gray-700 text-sm">Telephone No.:</label>
-                    <input type="number" id="tel_no" wire:model="tel_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" id="tel_no" wire:model="tel_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     <flux:error name="tel_no"/>
                 </div>
                 <div class="col-span-1">
                     <label for="cell_no" class="block font-bold text-gray-700 text-sm">Mobile No.:</label>
-                    <input type="number" id="cell_no" wire:model="cell_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" id="cell_no" wire:model="cell_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
                     <flux:error name="cell_no"/>
                 </div>
                 <div class="col-span-1">
-                    <label for="length_of_stay" class="block font-bold text-gray-700 text-sm">Length of Stay:</label>
-                    <input type="number" id="length_of_stay" wire:model="length_of_stay" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <flux:error name="length_of_stay"/>
+                    <label for="length_of_stay_years" class="block font-bold text-gray-700 text-sm">Length of Stay:</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <select id="length_of_stay_years" wire:model="length_of_stay_years" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Years</option>
+                                @for($i = 0; $i <= 50; $i++)
+                                    <option value="{{ $i }}">{{ $i }} {{ $i == 1 ? 'Year' : 'Years' }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div>
+                            <select id="length_of_stay_months" wire:model="length_of_stay_months" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Months</option>
+                                @for($i = 0; $i <= 11; $i++)
+                                    <option value="{{ $i }}">{{ $i }} {{ $i == 1 ? 'Month' : 'Months' }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div>
+                            <select id="length_of_stay_days" wire:model="length_of_stay_days" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Days</option>
+                                @for($i = 0; $i <= 30; $i++)
+                                    <option value="{{ $i }}">{{ $i }} {{ $i == 1 ? 'Day' : 'Days' }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+                    <flux:error name="length_of_stay_years"/>
+                    <flux:error name="length_of_stay_months"/>
+                    <flux:error name="length_of_stay_days"/>
                 </div>
                 <div class="col-span-1">
                     <label for="ownership" class="block font-bold text-gray-700 text-sm">Ownership:</label>
@@ -536,7 +577,41 @@ new class extends Component {
                             @foreach($properties as $index => $property)
                                 <tr>
                                     <td class="px-4 py-2">
-                                        <input type="text" wire:model="properties.{{ $index }}.type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <select wire:model="properties.{{ $index }}.type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                            <option value="">Select Type</option>
+                                            <optgroup label="Real Estate">
+                                                <option value="House">House</option>
+                                                <option value="Apartment">Apartment</option>
+                                                <option value="Land">Land</option>
+                                                <option value="Commercial Property">Commercial Property</option>
+                                            </optgroup>
+                                            <optgroup label="Vehicles">
+                                                <option value="Car">Car</option>
+                                                <option value="Motorcycle">Motorcycle</option>
+                                                <option value="Truck">Truck</option>
+                                                <option value="Van">Van</option>
+                                            </optgroup>
+                                            <optgroup label="Electronics & Gadgets">
+                                                <option value="Smartphone">Smartphone</option>
+                                                <option value="Laptop">Laptop</option>
+                                                <option value="Desktop Computer">Desktop Computer</option>
+                                                <option value="Tablet">Tablet</option>
+                                                <option value="Smart TV">Smart TV</option>
+                                            </optgroup>
+                                            <optgroup label="Appliances">
+                                                <option value="Refrigerator">Refrigerator</option>
+                                                <option value="Washing Machine">Washing Machine</option>
+                                                <option value="Air Conditioner">Air Conditioner</option>
+                                                <option value="Oven">Oven</option>
+                                                <option value="Microwave">Microwave</option>
+                                            </optgroup>
+                                            <optgroup label="Other Items">
+                                                <option value="Jewelry">Jewelry</option>
+                                                <option value="Furniture">Furniture</option>
+                                                <option value="Equipment">Equipment</option>
+                                                <option value="Other">Other</option>
+                                            </optgroup>
+                                        </select>
                                         <flux:error name="properties.{{ $index }}.type"/>
                                     </td>
                                     <td class="px-4 py-2">

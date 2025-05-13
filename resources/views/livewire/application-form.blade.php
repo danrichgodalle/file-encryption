@@ -51,7 +51,7 @@ new class extends Component {
     public $photo;
     public $sketch;
     public $signature;
-    public bool $test = true;
+    public bool $test = false;
     public $signaturePath;
     public $signatureData;
 

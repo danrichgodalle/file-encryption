@@ -163,7 +163,7 @@ new class extends Component {
                 'nick_name' => ['nullable', 'string'],
                 'address' => ['required', 'string'],
                 'tel_no' => ['nullable', 'integer', 'min:0'],
-                'cell_no' => ['required', 'integer', 'min:0'],
+                'cell_no' => ['required', 'string', 'regex:/^09\d{9}$/', 'size:11'],
                 'length_of_stay_years' => ['nullable', 'integer', 'min:0'],
                 'length_of_stay_months' => ['nullable', 'integer', 'min:0', 'max:11'],
                 'length_of_stay_days' => ['nullable', 'integer', 'min:0', 'max:30'],

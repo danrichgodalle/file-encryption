@@ -46,13 +46,14 @@ new class extends Component {
     public string $source_of_income = '';
     public string $monthly_income = '';
     public array $properties = [];
+    public array $businesses = [];
     public bool $success = false;
     public int $currentStep = 1;
     public $data;
     public $photo;
     public $sketch;
     public $signature;
-    public bool $test = false;
+    public bool $test = true;
     public $signaturePath;
     public $signatureData;
 
@@ -79,13 +80,17 @@ new class extends Component {
             ['type' => '', 'make_model' => '', 'years_acquired' => '', 'estimated_cost' => '']
         ];
 
+        $this->businesses = [
+            ['name' => '', 'nature' => '', 'years' => '', 'address' => '']
+        ];
+
         if($this->test) {
            $this->name = 'John Doe';
            $this->nick_name = 'John Doe';
            $this->address = '123 Main St, Anytown, USA';
            $this->date_of_birth = '1990-01-01';
            $this->tel_no = '1234567890';
-           $this->cell_no = '1234567890';
+           $this->cell_no = '09287518499';
            $this->length_of_stay_years = '1';
            $this->length_of_stay_months = '0';
            $this->length_of_stay_days = '0';
@@ -112,6 +117,10 @@ new class extends Component {
                 ['type' => 'Car', 'make_model' => 'Toyota', 'years_acquired' => '2021', 'estimated_cost' => '200000'],
                 ['type' => 'Motorcycle', 'make_model' => 'Honda', 'years_acquired' => '2022', 'estimated_cost' => '50000'],
                 ['type' => 'Cellphone', 'make_model' => 'Samsung', 'years_acquired' => '2023', 'estimated_cost' => '10000'],
+            ];
+            $this->businesses = [
+                ['name' => 'John Doe Retail', 'nature' => 'Retail Store', 'years' => '5', 'address' => '123 Business St'],
+                ['name' => 'John Doe Online', 'nature' => 'Online Shop', 'years' => '2', 'address' => '456 E-commerce Ave']
             ];
         }
     }
@@ -142,6 +151,17 @@ new class extends Component {
     {
         unset($this->properties[$index]);
         $this->properties = array_values($this->properties);
+    }
+
+    public function addBusiness()
+    {
+        $this->businesses[] = ['name' => '', 'nature' => '', 'years' => '', 'address' => ''];
+    }
+
+    public function removeBusiness($index)
+    {
+        unset($this->businesses[$index]);
+        $this->businesses = array_values($this->businesses);
     }
 
     public function nextStep()
@@ -181,9 +201,11 @@ new class extends Component {
                 'position' => ['nullable', 'string'],
                 'employer_name' => ['nullable', 'string'],
                 'employer_address' => ['nullable', 'string'],
-                'nature_of_business' => ['nullable', 'string'],
-                'years_in_business' => ['nullable', 'integer'],
-                'business_address' => ['nullable', 'string'],
+                'businesses' => ['required', 'array'],
+                'businesses.*.name' => ['required', 'string'],
+                'businesses.*.nature' => ['required', 'string'],
+                'businesses.*.years' => ['required', 'integer'],
+                'businesses.*.address' => ['required', 'string'],
                 'spouse_employment' => ['nullable', 'string'],
                 'spouse_position' => ['nullable', 'string'],
                 'spouse_employer_name' => ['nullable', 'string'],
@@ -235,9 +257,7 @@ new class extends Component {
             'position' => (isset($this->position)) ? Crypt::encrypt($this->position) : null,
             'employer_name' => (isset($this->employer_name)) ? Crypt::encrypt($this->employer_name) : null,
             'employer_address' => (isset($this->employer_address)) ? Crypt::encrypt($this->employer_address) : null,
-            'nature_of_business' => (isset($this->nature_of_business)) ? Crypt::encrypt($this->nature_of_business) : null,
-            'years_in_business' => (isset($this->years_in_business)) ? Crypt::encrypt($this->years_in_business) : null,
-            'business_address' => (isset($this->business_address)) ? Crypt::encrypt($this->business_address) : null,
+            'businesses' => (isset($this->businesses) && count($this->businesses) > 0) ? Crypt::encrypt(json_encode($this->businesses)) : null,
             'spouse_employment' => (isset($this->spouse_employment)) ? Crypt::encrypt($this->spouse_employment) : null,
             'spouse_position' => (isset($this->spouse_position)) ? Crypt::encrypt($this->spouse_position) : null,
             'spouse_employer_name' => (isset($this->spouse_employer_name)) ? Crypt::encrypt($this->spouse_employer_name) : null,
@@ -266,16 +286,23 @@ new class extends Component {
         // Add user_id to the encrypted data
         $encryptedData['user_id'] = auth()->id();
 
-        $created = Application::create($encryptedData);
-
-        if($created) {
-            $this->success = true;
-            session()->flash('saved', [
-                'title' => 'Success',
-                'text' => 'You have successfully submitted your application',
-            ]);
+        try {
+            $created = Application::create($encryptedData);
             
-            return $this->redirect(route('user.apply-loan'), navigate: true);
+            if($created) {
+                $this->success = true;
+                session()->flash('saved', [
+                    'title' => 'Success',
+                    'text' => 'You have successfully submitted your application',
+                ]);
+                
+                return $this->redirect(route('user.apply-loan'), navigate: true);
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', [
+                'title' => 'Error',
+                'text' => 'There was an error saving your application: ' . $e->getMessage(),
+            ]);
         }
     }
 }; ?>
@@ -471,22 +498,49 @@ new class extends Component {
     
             <div class="border border-gray-300 rounded-lg p-6 mb-6">
                 <h4 class="text-lg font-semibold text-gray-800 mb-4">B. Business</h4>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="col-span-2">
-                        <label for="nature_of_business" class="block font-bold text-gray-700">Nature of Business:</label>
-                        <input type="text" id="nature_of_business" wire:model="nature_of_business" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <flux:error name="nature_of_business"/>
-                    </div>
-                    <div>
-                        <label for="years_in_business" class="block font-bold text-gray-700">No. of Years in Business:</label>
-                        <input type="number" id="years_in_business" wire:model="years_in_business" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <flux:error name="years_in_business"/>
-                    </div>
-                    <div class="col-span-2">
-                        <label for="business_address" class="block font-bold text-gray-700">Business Address:</label>
-                        <input type="text" id="business_address" wire:model="business_address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <flux:error name="business_address"/>
-                    </div>
+                <div class="space-y-6">
+                    @foreach($businesses as $index => $business)
+                        <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                            <div class="flex justify-between items-center mb-4">
+                                <h5 class="text-md font-semibold text-gray-700">Business #{{ $index + 1 }}</h5>
+                                @if(count($businesses) > 1)
+                                    <button wire:click.prevent="removeBusiness({{ $index }})" class="text-red-500 hover:text-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                @endif
+                            </div>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="col-span-2">
+                                    <label for="businesses.{{ $index }}.name" class="block font-bold text-gray-700">Business Name:</label>
+                                    <input type="text" id="businesses.{{ $index }}.name" wire:model="businesses.{{ $index }}.name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <flux:error name="businesses.{{ $index }}.name"/>
+                                </div>
+                                <div class="col-span-2">
+                                    <label for="businesses.{{ $index }}.nature" class="block font-bold text-gray-700">Nature of Business:</label>
+                                    <input type="text" id="businesses.{{ $index }}.nature" wire:model="businesses.{{ $index }}.nature" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <flux:error name="businesses.{{ $index }}.nature"/>
+                                </div>
+                                <div>
+                                    <label for="businesses.{{ $index }}.years" class="block font-bold text-gray-700">No. of Years in Business:</label>
+                                    <input type="number" id="businesses.{{ $index }}.years" wire:model="businesses.{{ $index }}.years" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <flux:error name="businesses.{{ $index }}.years"/>
+                                </div>
+                                <div class="col-span-2">
+                                    <label for="businesses.{{ $index }}.address" class="block font-bold text-gray-700">Business Address:</label>
+                                    <input type="text" id="businesses.{{ $index }}.address" wire:model="businesses.{{ $index }}.address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <flux:error name="businesses.{{ $index }}.address"/>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    <button wire:click.prevent="addBusiness" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        Add Another Business
+                    </button>
                 </div>
             </div>
     
@@ -615,18 +669,20 @@ new class extends Component {
                     <flux:error name="sketch"/>
                 </div>
 
-                <div>
-                    <label for="photo" class="block font-bold text-gray-700 mb-2">Upload ID:</label>
-                    <input type="file" id="photo" wire:model="photo" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <flux:error name="photo"/>
-                </div>
-
                 @if($sketch)
                     <div class="mt-4">
                         <h3 class="text-lg font-semibold mb-2">Sketch Preview</h3>
                         <img src="{{ $sketch->temporaryUrl() }}" alt="Sketch Preview" class="max-w-xs border rounded-lg">
                     </div>
                 @endif
+
+                <div>
+                    <label for="photo" class="block font-bold text-gray-700 mb-2">Upload ID:</label>
+                    <input type="file" id="photo" wire:model="photo" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <flux:error name="photo"/>
+                </div>
+
+                
 
                 @if($photo)
                     <div class="mt-4">

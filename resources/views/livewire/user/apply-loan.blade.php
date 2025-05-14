@@ -160,7 +160,7 @@ new class extends Component {
                         <!-- Signature Section -->
                         @if($approvedApplication->signature)
                             <div class="mt-8">
-                                <h4 class="text-xl font-bold text-gray-900 mb-4">Digital Signature</h4>
+                                <h4 class="text-xl font-bold text-gray-900 mb-4">Upload Signature</h4>
                                 <div class="border border-gray-200 rounded-xl p-6 bg-gray-50 max-w-sm mx-auto">
                                     <img 
                                         src="{{ Storage::url('signatures/' . $approvedApplication->signature) }}" 

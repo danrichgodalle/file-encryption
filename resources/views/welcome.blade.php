@@ -56,11 +56,7 @@
           <li><a href="#team">Team</a></li>
           </li>
           <li><a href="#contact">Contact</a></li>
-          <li class="nav-item">
-            <a class="nav-link btn btn-outline-light ms-2" href="{{ url('/login') }}">
-                <i class="fas fa-sign-in-alt login-icon"></i> Admin
-            </a>
-        </li>
+          
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

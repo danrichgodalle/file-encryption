@@ -169,13 +169,8 @@ new class extends Component {
                 'length_of_stay_months' => ['nullable', 'integer', 'min:0', 'max:11'],
                 'length_of_stay_days' => ['nullable', 'integer', 'min:0', 'max:30'],
                 'ownership' => ['required', 'string'],
-<<<<<<< HEAD
-                'rent_amount' => ['nullable', 'numeric', 'min:0'],
-                'date_of_birth' => ['required', 'date', 'before:1996-01-01'],
-=======
                 'rent_amount' => ['nullable', 'numeric'],
                 'date_of_birth' => ['required', 'string'],
->>>>>>> 957143df57de46761f618d8d17113de1c211264c
                 'place_of_birth' => ['required', 'string'],
                 'age' => ['required', 'integer'],
                 'civil_status' => ['required', 'string'],

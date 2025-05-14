@@ -349,13 +349,8 @@ new class extends Component {
                     <flux:error name="tel_no"/>
                 </div>
                 <div class="col-span-1">
-<<<<<<< HEAD
-                    <label for="cell_no" class="block font-bold text-gray-700 text-sm">Mobile No.:</label>
-                    <input type="number" id="cell_no" wire:model="cell_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
-=======
                     <label for="cell_no" class="block font-bold text-gray-700 text-sm">Mobile No.:*</label>
                     <input type="number" id="cell_no" wire:model="cell_no" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
->>>>>>> 957143df57de46761f618d8d17113de1c211264c
                     <flux:error name="cell_no"/>
                 </div>
                 <div class="col-span-1">

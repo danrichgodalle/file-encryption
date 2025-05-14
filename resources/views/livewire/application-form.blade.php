@@ -63,6 +63,22 @@ new class extends Component {
     //     $this->signatureData = $signature;
     // }
 
+    public function updatedDateOfBirth($value)
+    {
+        if ($value) {
+            try {
+                $birthDate = new \DateTime($value);
+                $today = new \DateTime();
+                $age = $birthDate->diff($today)->y;
+                $this->age = (int)$age;
+            } catch (\Exception $e) {
+                $this->age = '';
+            }
+        } else {
+            $this->age = '';
+        }
+    }
+
     public function mount()
     {
         // Check if user has a pending application
@@ -429,7 +445,7 @@ new class extends Component {
                 </div>
                 <div class="col-span-1">
                     <label for="date_of_birth" class="block font-bold text-gray-700 text-sm">Date of Birth:*</label>
-                    <input type="date" id="date_of_birth" wire:model="date_of_birth" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="date" id="date_of_birth" wire:model.live="date_of_birth" max="1995-12-31" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <flux:error name="date_of_birth"/>
                 </div>
                 <div class="col-span-1">
@@ -439,7 +455,8 @@ new class extends Component {
                 </div>
                 <div class="col-span-1">
                     <label for="age" class="block font-bold text-gray-700 text-sm">Age:*</label>
-                    <input type="number" id="age" wire:model="age" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" id="age" wire:model="age" readonly class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50">
+                    <p class="text-sm text-gray-500 mt-1">Automatically computed from date of birth</p>
                     <flux:error name="age"/>
                 </div>
                 <div class="col-span-1">

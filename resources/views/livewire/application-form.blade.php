@@ -133,7 +133,6 @@ new class extends Component {
 
 
 
-
     public function addProperties()
     {
         $this->properties[] = ['type' => '', 'make_model' => '', 'years_acquired' => '', 'estimated_cost' => ''];

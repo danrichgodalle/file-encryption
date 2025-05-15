@@ -262,10 +262,10 @@
                             <tbody>
                                 @foreach (json_decode($application->properties, true) as $property)
                                     <tr>
-                                        <td>{{ $property['type'] }}</td>
-                                        <td>{{ $property['make_model'] }}</td>
-                                        <td>{{ $property['years_acquired'] }}</td>
-                                        <td>₱{{ number_format($property['estimated_cost'], 2) }}</td>
+                                        <td>{{ isset($property['type']) ? $property['type'] : '' }}</td>
+                                        <td>{{ isset($property['make_model']) ? $property['make_model'] : '' }}</td>
+                                        <td>{{ isset($property['years_acquired']) ? $property['years_acquired'] : '' }}</td>
+                                        <td>₱{{ isset($property['estimated_cost']) ? number_format($property['estimated_cost'], 2) : '0.00' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

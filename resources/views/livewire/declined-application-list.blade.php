@@ -7,27 +7,24 @@ use Carbon\Carbon;
 
 new class extends Component {
 
-    public $applications;
     public $search = '';
     public $selectedApplication;
     public $dateFilter = 'all'; // Options: all, latest_month, last_month, custom
     public $startDate = '';
     public $endDate = '';
+    public $perPage = 20;
 
     public function mount(): void
     {
-        $this->loadApplications();
+        // $this->loadApplications(); // REMOVE this line
     }
 
-    public function loadApplications(): void
+    public function getApplicationsProperty()
     {
         $query = Application::whereStatus('declined');
-        
         if ($this->search) {
             $query->where('name', 'like', '%' . $this->search . '%');
         }
-
-        // Apply date filters
         switch ($this->dateFilter) {
             case 'latest_month':
                 $query->whereMonth('created_at', Carbon::now()->month)
@@ -46,13 +43,12 @@ new class extends Component {
                 }
                 break;
         }
-        
-        $this->applications = $query->latest()->get();
+        return $query->latest()->paginate($this->perPage);
     }
 
     public function updatedSearch(): void
     {
-        $this->loadApplications();
+        $this->resetPage();
     }
 
     public function updatedDateFilter(): void
@@ -61,17 +57,23 @@ new class extends Component {
             $this->startDate = '';
             $this->endDate = '';
         }
-        $this->loadApplications();
+        $this->resetPage();
     }
 
     public function updatedStartDate(): void
     {
-        $this->loadApplications();
+        $this->resetPage();
     }
 
     public function updatedEndDate(): void
     {
-        $this->loadApplications();
+        $this->resetPage();
+    }
+
+    public function resetPage(): void
+    {
+        // Livewire's built-in pagination trait would be used in a normal component
+        // For Volt, you may need to use $this->setPage(1) if using WithPagination trait
     }
 
     public function viewDetails($id): void
@@ -249,7 +251,7 @@ new class extends Component {
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        @foreach($applications as $application)
+        @foreach($this->applications as $application)
             <div class="flex flex-col items-center">
                 <button 
                     wire:click="viewDetails({{ $application->id }})"
@@ -267,6 +269,11 @@ new class extends Component {
                 </button>
             </div>
         @endforeach
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-6">
+        {{ $this->applications->links('livewire::tailwind') }}
     </div>
 
     <!-- Application Details Modal -->

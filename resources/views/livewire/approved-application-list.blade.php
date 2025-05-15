@@ -4,29 +4,23 @@ use Livewire\Volt\Component;
 use App\Models\Application;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Livewire\WithPagination;
 
 new class extends Component {
+    use WithPagination;
 
-    public $applications;
     public $search = '';
     public $selectedApplication;
     public $dateFilter = 'all'; // Options: all, latest_month, last_month, custom
     public $startDate = '';
     public $endDate = '';
 
-    public function mount(): void
-    {
-        $this->loadApplications();
-    }
-
-    public function loadApplications(): void
+    public function getApplicationsProperty()
     {
         $query = Application::whereStatus('approved');
-        
         if ($this->search) {
             $query->where('name', 'like', '%' . $this->search . '%');
         }
-
         // Apply date filters
         switch ($this->dateFilter) {
             case 'latest_month':
@@ -46,13 +40,12 @@ new class extends Component {
                 }
                 break;
         }
-        
-        $this->applications = $query->latest()->get();
+        return $query->latest()->paginate(20);
     }
 
     public function updatedSearch(): void
     {
-        $this->loadApplications();
+        $this->resetPage();
     }
 
     public function updatedDateFilter(): void
@@ -61,17 +54,17 @@ new class extends Component {
             $this->startDate = '';
             $this->endDate = '';
         }
-        $this->loadApplications();
+        $this->resetPage();
     }
 
     public function updatedStartDate(): void
     {
-        $this->loadApplications();
+        $this->resetPage();
     }
 
     public function updatedEndDate(): void
     {
-        $this->loadApplications();
+        $this->resetPage();
     }
 
     public function viewDetails($id): void
@@ -151,17 +144,6 @@ new class extends Component {
 <div>
     <div class="bg-white rounded-lg shadow p-6 mb-6">
         <div class="space-y-4">
-            {{-- <!-- Search and Filter Header -->
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-semibold text-gray-700">Search & Filters</h2>
-                <button 
-                    wire:click="loadApplications"
-                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-                >
-                    Apply Filters
-                </button>
-            </div> --}}
-
             <!-- Search Bar -->
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -249,7 +231,7 @@ new class extends Component {
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        @foreach($applications as $application)
+        @foreach($this->applications as $application)
             <div class="flex flex-col items-center">
                 <button 
                     wire:click="viewDetails({{ $application->id }})"
@@ -267,6 +249,10 @@ new class extends Component {
                 </button>
             </div>
         @endforeach
+    </div>
+
+    <div class="mt-6">
+        {{ $this->applications->links() }}
     </div>
 
     <!-- Application Details Modal -->
@@ -309,12 +295,6 @@ new class extends Component {
                         <p class="mt-2 text-sm text-gray-500">Download PDF Document</p>
                     </div>
                 </div>
-
-                {{-- <div class="flex justify-end mt-6">
-                    <flux:button wire:click="exportToPdf({{ $selectedApplication->id }})" variant="primary" class="flex items-center gap-1" icon="printer">
-                        Export to PDF
-                    </flux:button>
-                </div> --}}
             @endif
         </div>
     </flux:modal>

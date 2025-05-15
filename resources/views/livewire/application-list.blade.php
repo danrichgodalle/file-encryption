@@ -11,7 +11,6 @@ use Livewire\Attributes\Live;
 
 
 new class extends Component {
-    public $applications;
     public $selectedApplication;
     public $setDecryptionKey = false;
     public $defaultPassword = '12345678';
@@ -30,6 +29,8 @@ new class extends Component {
     public $endDate = '';
     #[Live]
     public $search = '';
+
+    public $perPage = 20;
 
     public function mount(): void
     {
@@ -87,7 +88,37 @@ new class extends Component {
             $query->where('name', 'like', '%' . $this->search . '%');
         }
 
-        $this->applications = $query->get();
+        $this->applications = $query->paginate($this->perPage);
+    }
+
+    public function getApplicationsProperty()
+    {
+        $query = Application::whereStatus('pending');
+
+        switch ($this->filterType) {
+            case 'this_month':
+                $query->whereMonth('created_at', Carbon::now()->month)
+                      ->whereYear('created_at', Carbon::now()->year);
+                break;
+            case 'last_month':
+                $query->whereMonth('created_at', Carbon::now()->subMonth()->month)
+                      ->whereYear('created_at', Carbon::now()->subMonth()->year);
+                break;
+            case 'custom':
+                if ($this->startDate && $this->endDate) {
+                    $query->whereBetween('created_at', [
+                        Carbon::parse($this->startDate)->startOfDay(),
+                        Carbon::parse($this->endDate)->endOfDay()
+                    ]);
+                }
+                break;
+        }
+
+        if ($this->search) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        return $query->paginate($this->perPage);
     }
 
     public function selectApplication($id): void
@@ -361,7 +392,7 @@ new class extends Component {
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        @foreach($applications as $application)
+        @foreach($this->applications as $application)
             <div class="flex flex-col items-center cursor-pointer" wire:click="selectApplication({{ $application->id }})">
                 <!-- Folder Icon -->
                 <div class="w-24 h-20 bg-yellow-400 rounded-t-lg relative flex items-center justify-center mb-2">
@@ -378,6 +409,11 @@ new class extends Component {
                 </div>
             </div>
         @endforeach
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-6">
+        {{ $this->applications->links() }}
     </div>
 
     <flux:modal name="edit-profile" class="md:w-1/2">

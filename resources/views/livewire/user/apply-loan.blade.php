@@ -82,6 +82,21 @@ new class extends Component {
                                 <p class="text-lg font-semibold text-gray-900 mt-1">{{ $approvedApplication->address }}</p>
                             </div>
                             <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <p class="text-sm font-medium text-gray-500">City</p>
+                                <p class="text-lg font-semibold text-gray-900 mt-1">{{ $approvedApplication->city }}</p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <p class="text-sm font-medium text-gray-500">State</p>
+                                <p class="text-lg font-semibold text-gray-900 mt-1">{{ $approvedApplication->state }}</p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <p class="text-sm font-medium text-gray-500">Zip Code</p>
+                                <p class="text-lg font-semibold text-gray-900 mt-1">{{ $approvedApplication->zip_code }}</p>
+                            </div>
+
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
                                 <p class="text-sm font-medium text-gray-500">Contact Numbers</p>
                                 <div class="mt-1">
                                     <p class="text-lg font-semibold text-gray-900">Tel No.: {{ $approvedApplication->tel_no }}</p>
@@ -108,6 +123,9 @@ new class extends Component {
                                             <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Nature of Business</th>
                                             <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Years in Business</th>
                                             <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Address</th>
+                                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">City</th>
+                                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">State</th>
+                                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Zip Code</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -117,6 +135,9 @@ new class extends Component {
                                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $property['nature'] }}</td>
                                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $property['years'] }}</td>
                                                 <td class="px-6 py-4 text-sm text-gray-600">{{ $property['address'] }}</td>
+                                                <td class="px-6 py-4 text-sm text-gray-600">{{ $property['city'] }}</td>
+                                                <td class="px-6 py-4 text-sm text-gray-600">{{ $property['state'] }}</td>
+                                                <td class="px-6 py-4 text-sm text-gray-600">{{ $property['zip_code'] }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

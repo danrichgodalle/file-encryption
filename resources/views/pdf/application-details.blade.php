@@ -126,6 +126,22 @@
                 <span class="label">Address:</span>
                 <span class="value">{{ $application->address }}</span>
             </div>
+
+            <div class="detail-row">
+                <span class="label">City:</span>
+                <span class="value">{{ $application->city }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">State:</span>
+                <span class="value">{{ $application->state }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Zip Code:</span>
+                <span class="value">{{ $application->zip_code }}</span>
+            </div>
+
             <div class="detail-row">
                 <span class="label">Telephone No:</span>
                 <span class="value">{{ $application->tel_no }}</span>
@@ -144,7 +160,7 @@
             </div>
             <div class="detail-row">
                 <span class="label">Rent Amount:</span>
-                <span class="value">{{ $application->rent_amount }}</span>
+                <span class="value">{{ number_format($application->rent_amount, 2) }}</span>
             </div>
         </div>
 
@@ -190,6 +206,22 @@
                 <span class="label">Employer Address:</span>
                 <span class="value">{{ $application->employer_address }}</span>
             </div>
+
+            <div class="detail-row">
+                <span class="label">Employer City:</span>
+                <span class="value">{{ $application->employer_city }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Employer State:</span>
+                <span class="value">{{ $application->employer_state }}</span>
+            </div>
+
+            <div class="detail-row">    
+                <span class="label">Employer Zip Code:</span>
+                <span class="value">{{ $application->employer_zip_code }}</span>
+            </div>
+           
         </div>
 
         <div class="section">
@@ -204,6 +236,9 @@
                                     <th>Nature of Business</th>
                                     <th>Years in Business</th>
                                     <th>Address</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                    <th>Zip Code</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -213,6 +248,9 @@
                                         <td>{{ $property['nature'] }}</td>
                                         <td>{{ $property['years'] }}</td>
                                         <td>{{ $property['address'] }}</td>
+                                        <td>{{ $property['city'] }}</td>
+                                        <td>{{ $property['state'] }}</td>
+                                        <td>{{ $property['zip_code'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -243,6 +281,23 @@
                 <span class="label">Spouse Employer Address:</span>
                 <span class="value">{{ $application->spouse_employer_address }}</span>
             </div>
+
+            <div class="detail-row">
+                <span class="label">Spouse Employer City:</span>
+                <span class="value">{{ $application->spouse_employer_city }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Spouse Employer State:</span>
+                <span class="value">{{ $application->spouse_employer_state }}</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="label">Spouse Employer Zip Code:</span>
+                <span class="value">{{ $application->spouse_employer_zip_code }}</span>
+            </div>
+            
+            
         </div>
 
         <div class="section">

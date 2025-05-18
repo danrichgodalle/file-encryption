@@ -18,6 +18,7 @@ new class extends Component {
             ->whereIn('status', ['pending', 'approved'])
             ->exists();
         $this->hasApprovedApplication = Application::where('user_id', Auth::user()->id)->where('status', 'approved')->exists();
+        $this->amount = number_format($this->amount);
     }
 
     public function applyLoan()
@@ -124,10 +125,11 @@ new class extends Component {
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="text-gray-500 sm:text-sm">₱</span>
                         </div>
-                        <input type="number" 
-                            wire:model="amount" 
-                            min="3000" 
-                            step="100" 
+                        <input type="text" 
+                            wire:model.live="amount" 
+                            id="loanAmount"
+                            oninput="formatRentAmount(this)"
+                            onblur="formatRentAmountOnBlur(this)"
                             class="pl-8 block w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                             {{ (!$hasApprovedApplication || $hasActiveLoan) ? 'disabled' : '' }}>
                     </div>
@@ -135,6 +137,46 @@ new class extends Component {
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <script>
+
+                    function formatRentAmount(input) {
+                        // Allow only numbers and one decimal point
+                        let value = input.value.replace(/[^0-9.]/g, '');
+                        
+                        // Ensure only one decimal point
+                        let parts = value.split('.');
+                        if (parts.length > 2) {
+                            value = parts[0] + '.' + parts.slice(1).join('');
+                        }
+                        
+                        // Limit to 2 decimal places
+                        if (parts.length > 1) {
+                            value = parts[0] + '.' + parts[1].slice(0, 2);
+                        }
+                        
+                        // Update the input value
+                        input.value = value;
+                        
+                        // Update the wire model
+                        @this.set('amount', value);
+                    }
+
+                    function formatRentAmountOnBlur(input) {
+                        // Get the numeric value
+                        let value = input.value.replace(/[^0-9.]/g, '');
+                        
+                        // Format with commas
+                        if (value) {
+                            let parts = value.split('.');
+                            parts[0] = Number(parts[0]).toLocaleString();
+                            input.value = parts.join('.');
+                        }
+                        
+                        // Update the wire model with the numeric value
+                        @this.set('amount', value);
+                    }
+                </script>
 
                 <button type="submit" 
                     class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"

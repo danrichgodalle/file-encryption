@@ -18,6 +18,9 @@ new class extends Component {
     public string $name = '';
     public string $nick_name = '';
     public string $address = '';
+    public string $city = '';
+    public string $state = '';
+    public string $zip_code = '';
     public string $date_of_birth = '';
     public string $tel_no = '';
     public string $cell_no = '';
@@ -36,6 +39,9 @@ new class extends Component {
     public string $position = '';
     public string $employer_name = '';
     public string $employer_address = '';
+    public string $employer_city = '';
+    public string $employer_state = '';
+    public string $employer_zip_code = '';
     public string $nature_of_business = '';
     public string $years_in_business = '';
     public string $business_address = '';
@@ -43,6 +49,9 @@ new class extends Component {
     public string $spouse_position = '';
     public string $spouse_employer_name = '';
     public string $spouse_employer_address = '';
+    public string $spouse_employer_city = '';
+    public string $spouse_employer_state = '';
+    public string $spouse_employer_zip_code = '';
     public string $source_of_income = '';
     public string $monthly_income = '';
     public array $properties = [];
@@ -97,13 +106,16 @@ new class extends Component {
         ];
 
         $this->businesses = [
-            ['name' => '', 'nature' => '', 'years' => '', 'address' => '']
+            ['name' => '', 'nature' => '', 'years' => '', 'address' => '', 'city' => '', 'state' => '', 'zip_code' => '']
         ];
 
         if($this->test) {
            $this->name = 'John Doe';
            $this->nick_name = 'John Doe';
-           $this->address = '123 Main St, Anytown, USA';
+           $this->address = '123 Main St';
+           $this->city = 'Anytown';
+           $this->state = 'CA';
+           $this->zip_code = '12345';
            $this->date_of_birth = '1990-01-01';
            $this->tel_no = '1234567890';
            $this->cell_no = '09287518499';
@@ -120,14 +132,20 @@ new class extends Component {
            $this->employment = 'Employed';
            $this->position = 'Manager';
            $this->employer_name = 'John Doe';
-           $this->employer_address = '123 Main St, Anytown, USA';
+           $this->employer_address = '123 Main St';
+           $this->employer_city = 'Anytown';
+           $this->employer_state = 'CA';
+           $this->employer_zip_code = '12345';
            $this->nature_of_business = 'Business';
            $this->years_in_business = '1';
-           $this->business_address = '123 Main St, Anytown, USA';
+           $this->business_address = '123 Main St';
            $this->spouse_employment = 'Employed';
            $this->spouse_position = 'Manager';
            $this->spouse_employer_name = 'John Doe';
-           $this->spouse_employer_address = '123 Main St, Anytown, USA';
+           $this->spouse_employer_address = '123 Main St';
+           $this->spouse_employer_city = 'Anytown';
+           $this->spouse_employer_state = 'CA';
+           $this->spouse_employer_zip_code = '12345';
            $this->properties = [
                 ['type' => 'House', 'make_model' => 'John Doe', 'years_acquired' => '2020', 'estimated_cost' => '1000000'],
                 ['type' => 'Car', 'make_model' => 'Toyota', 'years_acquired' => '2021', 'estimated_cost' => '200000'],
@@ -135,9 +153,10 @@ new class extends Component {
                 ['type' => 'Cellphone', 'make_model' => 'Samsung', 'years_acquired' => '2023', 'estimated_cost' => '10000'],
             ];
             $this->businesses = [
-                ['name' => 'John Doe Retail', 'nature' => 'Retail Store', 'years' => '5', 'address' => '123 Business St'],
-                ['name' => 'John Doe Online', 'nature' => 'Online Shop', 'years' => '2', 'address' => '456 E-commerce Ave']
+                ['name' => 'John Doe Retail', 'nature' => 'Retail Store', 'years' => '5', 'address' => '123 Business St', 'city' => 'Anytown', 'state' => 'CA', 'zip_code' => '12345'],
+                ['name' => 'John Doe Online', 'nature' => 'Online Shop', 'years' => '2', 'address' => '456 E-commerce Ave', 'city' => 'Anytown', 'state' => 'CA', 'zip_code' => '12345']
             ];
+
         }
     }
 
@@ -171,7 +190,7 @@ new class extends Component {
 
     public function addBusiness()
     {
-        $this->businesses[] = ['name' => '', 'nature' => '', 'years' => '', 'address' => ''];
+        $this->businesses[] = ['name' => '', 'nature' => '', 'years' => '', 'address' => '', 'city' => '', 'state' => '', 'zip_code' => ''];
     }
 
     public function removeBusiness($index)
@@ -198,18 +217,21 @@ new class extends Component {
                 'name' => ['required', 'string'],
                 'nick_name' => ['nullable', 'string'],
                 'address' => ['required', 'string'],
+                'city' => ['required', 'string'],
+                'state' => ['required', 'string'],
+                'zip_code' => ['required', 'string', 'regex:/^\d{5}(-\d{4})?$/'],
                 'tel_no' => ['nullable', 'integer', 'min:0'],
                 'cell_no' => ['required', 'string', 'regex:/^09\d{9}$/', 'size:11'],
                 'length_of_stay_years' => ['nullable', 'integer', 'min:0'],
                 'length_of_stay_months' => ['nullable', 'integer', 'min:0', 'max:11'],
                 'length_of_stay_days' => ['nullable', 'integer', 'min:0', 'max:30'],
                 'ownership' => ['required', 'string'],
-                'rent_amount' => ['nullable', 'numeric'],
-                'date_of_birth' => ['required', 'string'],
+                'rent_amount' => ['nullable', 'numeric', 'min:0', 'max:1000000000'],
+                'date_of_birth' => ['required', 'string', 'date', 'before_or_equal:1995-12-31'],
                 'place_of_birth' => ['required', 'string'],
-                'age' => ['required', 'integer'],
+                'age' => ['required', 'integer', 'min:0'],
                 'civil_status' => ['required', 'string'],
-                'dependents' => ['required', 'integer'],
+                'dependents' => ['required', 'integer', 'min:0', 'max:100'],
                 'contact_person' => ['required', 'string'],
             ],
             2 => [
@@ -217,22 +239,28 @@ new class extends Component {
                 'position' => ['nullable', 'string'],
                 'employer_name' => ['nullable', 'string'],
                 'employer_address' => ['nullable', 'string'],
+                'employer_city' => ['nullable', 'string'],
+                'employer_state' => ['nullable', 'string'],
+                'employer_zip_code' => ['nullable', 'string', 'regex:/^\d{5}(-\d{4})?$/'],
                 'businesses' => ['required', 'array'],
                 'businesses.*.name' => ['required', 'string'],
                 'businesses.*.nature' => ['required', 'string'],
-                'businesses.*.years' => ['required', 'integer'],
+                'businesses.*.years' => ['required', 'integer', 'min:0', 'max:100'],
                 'businesses.*.address' => ['required', 'string'],
                 'spouse_employment' => ['nullable', 'string'],
                 'spouse_position' => ['nullable', 'string'],
                 'spouse_employer_name' => ['nullable', 'string'],
                 'spouse_employer_address' => ['nullable', 'string'],
+                'spouse_employer_city' => ['nullable', 'string'],
+                'spouse_employer_state' => ['nullable', 'string'],
+                'spouse_employer_zip_code' => ['nullable', 'string', 'regex:/^\d{5}(-\d{4})?$/'],
             ],
             3 => [
                 'properties' => ['required', 'array'],
                 'properties.*.type' => ['required', 'string'],
                 'properties.*.make_model' => ['required', 'string'],
-                'properties.*.years_acquired' => ['required', 'string'],
-                'properties.*.estimated_cost' => ['required', 'string'],
+                'properties.*.years_acquired' => ['required', 'integer', 'min:0'],
+                'properties.*.estimated_cost' => ['required', 'numeric', 'min:0'],
             ],
             4 => [
                 'photo' => ['required', 'image', 'max:1024'],
@@ -250,6 +278,9 @@ new class extends Component {
             'name' => (isset($this->name)) ? Crypt::encrypt($this->name) : null,
             'nick_name' => (isset($this->nick_name)) ? Crypt::encrypt($this->nick_name) : null,
             'address' => (isset($this->address)) ? Crypt::encrypt($this->address) : null,
+            'city' => (isset($this->city)) ? Crypt::encrypt($this->city) : null,
+            'state' => (isset($this->state)) ? Crypt::encrypt($this->state) : null,
+            'zip_code' => (isset($this->zip_code)) ? Crypt::encrypt($this->zip_code) : null,
             'tel_no' => (isset($this->tel_no)) ? Crypt::encrypt($this->tel_no) : null,
             'cell_no' => (isset($this->cell_no)) ? Crypt::encrypt($this->cell_no) : null,
             'length_of_stay' => (isset($this->length_of_stay_years) || isset($this->length_of_stay_months) || isset($this->length_of_stay_days)) 
@@ -273,11 +304,17 @@ new class extends Component {
             'position' => (isset($this->position)) ? Crypt::encrypt($this->position) : null,
             'employer_name' => (isset($this->employer_name)) ? Crypt::encrypt($this->employer_name) : null,
             'employer_address' => (isset($this->employer_address)) ? Crypt::encrypt($this->employer_address) : null,
+            'employer_city' => (isset($this->employer_city)) ? Crypt::encrypt($this->employer_city) : null,
+            'employer_state' => (isset($this->employer_state)) ? Crypt::encrypt($this->employer_state) : null,
+            'employer_zip_code' => (isset($this->employer_zip_code)) ? Crypt::encrypt($this->employer_zip_code) : null,
             'businesses' => (isset($this->businesses) && count($this->businesses) > 0) ? Crypt::encrypt(json_encode($this->businesses)) : null,
             'spouse_employment' => (isset($this->spouse_employment)) ? Crypt::encrypt($this->spouse_employment) : null,
             'spouse_position' => (isset($this->spouse_position)) ? Crypt::encrypt($this->spouse_position) : null,
             'spouse_employer_name' => (isset($this->spouse_employer_name)) ? Crypt::encrypt($this->spouse_employer_name) : null,
             'spouse_employer_address' => (isset($this->spouse_employer_address)) ? Crypt::encrypt($this->spouse_employer_address) : null,
+            'spouse_employer_city' => (isset($this->spouse_employer_city)) ? Crypt::encrypt($this->spouse_employer_city) : null,
+            'spouse_employer_state' => (isset($this->spouse_employer_state)) ? Crypt::encrypt($this->spouse_employer_state) : null,
+            'spouse_employer_zip_code' => (isset($this->spouse_employer_zip_code)) ? Crypt::encrypt($this->spouse_employer_zip_code) : null,
             'properties' => (isset($this->properties) && count($this->properties) > 0) ? Crypt::encrypt(json_encode($this->properties)) : null,
         ];
 
@@ -383,8 +420,23 @@ new class extends Component {
                 </div>
                 <div class="col-span-1">
                     <label for="address" class="block font-bold text-gray-700 text-sm">Address:*</label>
-                    <input type="text" id="address" wire:model="address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" id="address" wire:model="address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Street address">
                     <flux:error name="address"/>
+                </div>
+                <div class="col-span-1">
+                    <label for="city" class="block font-bold text-gray-700 text-sm">City:*</label>
+                    <input type="text" id="city" wire:model="city" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <flux:error name="city"/>
+                </div>
+                <div class="col-span-1">
+                    <label for="state" class="block font-bold text-gray-700 text-sm">State:*</label>
+                    <input type="text" id="state" wire:model="state" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <flux:error name="state"/>
+                </div>
+                <div class="col-span-1">
+                    <label for="zip_code" class="block font-bold text-gray-700 text-sm">ZIP Code:*</label>
+                    <input type="text" id="zip_code" wire:model="zip_code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="12345 or 12345-6789">
+                    <flux:error name="zip_code"/>
                 </div>
                 <div class="col-span-1">
                     <label for="tel_no" class="block font-bold text-gray-700 text-sm">Telephone No.:</label>
@@ -440,8 +492,51 @@ new class extends Component {
                 </div>
                 <div class="col-span-2">
                     <label for="rent_amount" class="block font-bold text-gray-700 text-sm">Rent Amount (if Rented):</label>
-                    <input type="number" id="rent_amount" wire:model="rent_amount" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" min="0">
+                    <input type="text" id="rent_amount" wire:model.live="rent_amount" 
+                        oninput="formatRentAmount(this)"
+                        onblur="formatRentAmountOnBlur(this)"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        autocomplete="off">
                     <flux:error name="rent_amount"/>
+
+                    <script>
+                        function formatRentAmount(input) {
+                            // Allow only numbers and one decimal point
+                            let value = input.value.replace(/[^0-9.]/g, '');
+                            
+                            // Ensure only one decimal point
+                            let parts = value.split('.');
+                            if (parts.length > 2) {
+                                value = parts[0] + '.' + parts.slice(1).join('');
+                            }
+                            
+                            // Limit to 2 decimal places
+                            if (parts.length > 1) {
+                                value = parts[0] + '.' + parts[1].slice(0, 2);
+                            }
+                            
+                            // Update the input value
+                            input.value = value;
+                            
+                            // Update the wire model
+                            @this.set('rent_amount', value);
+                        }
+
+                        function formatRentAmountOnBlur(input) {
+                            // Get the numeric value
+                            let value = input.value.replace(/[^0-9.]/g, '');
+                            
+                            // Format with commas
+                            if (value) {
+                                let parts = value.split('.');
+                                parts[0] = Number(parts[0]).toLocaleString();
+                                input.value = parts.join('.');
+                            }
+                            
+                            // Update the wire model with the numeric value
+                            @this.set('rent_amount', value);
+                        }
+                    </script>
                 </div>
                 <div class="col-span-1">
                     <label for="date_of_birth" class="block font-bold text-gray-700 text-sm">Date of Birth:*</label>
@@ -470,7 +565,7 @@ new class extends Component {
                 </div>
                 <div class="col-span-1">
                     <label for="dependents" class="block font-bold text-gray-700 text-sm">Number of Dependents:</label>
-                    <input type="number" id="dependents" wire:model="dependents" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="number" id="dependents" min="0" wire:model="dependents" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <flux:error name="dependents"/>
                 </div>
                 <div class="col-span-1">
@@ -506,9 +601,24 @@ new class extends Component {
                         <flux:error name="employer_name"/>
                     </div>
                     <div class="col-span-2">
-                        <label for="employer_address" class="block font-bold text-gray-700">Employer Address:</label>
-                        <input type="text" id="employer_address" wire:model="employer_address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label for="employer_address" class="block font-bold text-gray-700">Address:</label>
+                        <input type="text" id="employer_address" wire:model="employer_address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Street address">
                         <flux:error name="employer_address"/>
+                    </div>
+                    <div class="col-span-1">
+                        <label for="employer_city" class="block font-bold text-gray-700">City:</label>
+                        <input type="text" id="employer_city" wire:model="employer_city" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <flux:error name="employer_city"/>
+                    </div>
+                    <div class="col-span-1">
+                        <label for="employer_state" class="block font-bold text-gray-700">State:</label>
+                        <input type="text" id="employer_state" wire:model="employer_state" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <flux:error name="employer_state"/>
+                    </div>
+                    <div class="col-span-1">
+                        <label for="employer_zip_code" class="block font-bold text-gray-700">ZIP Code:</label>
+                        <input type="text" id="employer_zip_code" wire:model="employer_zip_code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="12345 or 12345-6789">
+                        <flux:error name="employer_zip_code"/>
                     </div>
                 </div>
             </div>
@@ -546,8 +656,23 @@ new class extends Component {
                                 </div>
                                 <div class="col-span-2">
                                     <label for="businesses.{{ $index }}.address" class="block font-bold text-gray-700">Business Address:</label>
-                                    <input type="text" id="businesses.{{ $index }}.address" wire:model="businesses.{{ $index }}.address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <input type="text" id="businesses.{{ $index }}.address" wire:model="businesses.{{ $index }}.address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Street address">
                                     <flux:error name="businesses.{{ $index }}.address"/>
+                                </div>
+                                <div>
+                                    <label for="businesses.{{ $index }}.city" class="block font-bold text-gray-700">City:</label>
+                                    <input type="text" id="businesses.{{ $index }}.city" wire:model="businesses.{{ $index }}.city" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <flux:error name="businesses.{{ $index }}.city"/>
+                                </div>
+                                <div>
+                                    <label for="businesses.{{ $index }}.state" class="block font-bold text-gray-700">State:</label>
+                                    <input type="text" id="businesses.{{ $index }}.state" wire:model="businesses.{{ $index }}.state" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <flux:error name="businesses.{{ $index }}.state"/>
+                                </div>
+                                <div>
+                                    <label for="businesses.{{ $index }}.zip_code" class="block font-bold text-gray-700">ZIP Code:</label>
+                                    <input type="text" id="businesses.{{ $index }}.zip_code" wire:model="businesses.{{ $index }}.zip_code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="12345 or 12345-6789">
+                                    <flux:error name="businesses.{{ $index }}.zip_code"/>
                                 </div>
                             </div>
                         </div>
@@ -561,7 +686,7 @@ new class extends Component {
                 </div>
             </div>
     
-            <div class="border border-gray-300 rounded-lg p-6 mb-6">
+            <div class="border border-gray-300 rounded-lg p-6 mb-6" x-show="$wire.civil_status !== 'Single'">
                 <h4 class="text-lg font-semibold text-gray-800 mb-4">C. Spouse (If Married)</h4>
                 <div class="grid grid-cols-2 gap-6">
                     <div>
@@ -580,9 +705,24 @@ new class extends Component {
                         <flux:error name="spouse_employer_name"/>
                     </div>
                     <div class="col-span-2">
-                        <label for="spouse_employer_address" class="block font-bold text-gray-700">Employer Address:</label>
-                        <input type="text" id="spouse_employer_address" wire:model="spouse_employer_address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label for="spouse_employer_address" class="block font-bold text-gray-700">Address:</label>
+                        <input type="text" id="spouse_employer_address" wire:model="spouse_employer_address" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Street address">
                         <flux:error name="spouse_employer_address"/>
+                    </div>
+                    <div class="col-span-1">
+                        <label for="spouse_employer_city" class="block font-bold text-gray-700">City:</label>
+                        <input type="text" id="spouse_employer_city" wire:model="spouse_employer_city" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <flux:error name="spouse_employer_city"/>
+                    </div>
+                    <div class="col-span-1">
+                        <label for="spouse_employer_state" class="block font-bold text-gray-700">State:</label>
+                        <input type="text" id="spouse_employer_state" wire:model="spouse_employer_state" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <flux:error name="spouse_employer_state"/>
+                    </div>
+                    <div class="col-span-1">
+                        <label for="spouse_employer_zip_code" class="block font-bold text-gray-700">ZIP Code:</label>
+                        <input type="text" id="spouse_employer_zip_code" wire:model="spouse_employer_zip_code" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="12345 or 12345-6789">
+                        <flux:error name="spouse_employer_zip_code"/>
                     </div>
                 </div>
             </div>
@@ -653,11 +793,14 @@ new class extends Component {
                                         <flux:error name="properties.{{ $index }}.make_model"/>
                                     </td>
                                     <td class="px-4 py-2">
-                                        <input type="number" wire:model="properties.{{ $index }}.years_acquired" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="number" wire:model="properties.{{ $index }}.years_acquired" min="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <flux:error name="properties.{{ $index }}.years_acquired"/>
                                     </td>
                                     <td class="px-4 py-2">
-                                        <input type="number" wire:model="properties.{{ $index }}.estimated_cost" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" wire:model.live="properties.{{ $index }}.estimated_cost" 
+                                            oninput="formatEstimatedCost(this)"
+                                            onblur="formatEstimatedCostOnBlur(this)"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <flux:error name="properties.{{ $index }}.estimated_cost"/>
                                     </td>
                                     <td class="px-4 py-2">
@@ -759,3 +902,44 @@ new class extends Component {
 
 
 </div>
+
+<script>
+    function formatEstimatedCost(input) {
+        // Allow only numbers and one decimal point
+        let value = input.value.replace(/[^0-9.]/g, '');
+        
+        // Ensure only one decimal point
+        let parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts.slice(1).join('');
+        }
+        
+        // Limit to 2 decimal places
+        if (parts.length > 1) {
+            value = parts[0] + '.' + parts[1].slice(0, 2);
+        }
+        
+        // Update the input value
+        input.value = value;
+        
+        // Update the wire model
+        let index = input.getAttribute('wire:model.live').match(/\d+/)[0];
+        @this.set('properties.' + index + '.estimated_cost', value);
+    }
+
+    function formatEstimatedCostOnBlur(input) {
+        // Get the numeric value
+        let value = input.value.replace(/[^0-9.]/g, '');
+        
+        // Format with commas
+        if (value) {
+            let parts = value.split('.');
+            parts[0] = Number(parts[0]).toLocaleString();
+            input.value = parts.join('.');
+        }
+        
+        // Update the wire model with the numeric value
+        let index = input.getAttribute('wire:model.live').match(/\d+/)[0];
+        @this.set('properties.' + index + '.estimated_cost', value);
+    }
+</script>

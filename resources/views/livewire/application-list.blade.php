@@ -174,6 +174,9 @@ new class extends Component {
         $application->name = $application->name ?  decrypt($application->name) : '';
         $application->nick_name = $application->nick_name ?  decrypt($application->nick_name) : '';
         $application->address = $application->address ?  decrypt($application->address) : '';
+        $application->city = $application->city ?  decrypt($application->city) : '';
+        $application->state = $application->state ?  decrypt($application->state) : '';
+        $application->zip_code = $application->zip_code ?  decrypt($application->zip_code) : '';
         $application->tel_no = $application->tel_no ?  decrypt($application->tel_no) : '';
         $application->cell_no = $application->cell_no ?  decrypt($application->cell_no) : '';
         $application->length_of_stay = $application->length_of_stay ?  decrypt($application->length_of_stay) : '';
@@ -192,12 +195,17 @@ new class extends Component {
         $application->position = $application->position ?  decrypt($application->position) : '';
         $application->employer_name = $application->employer_name ?  decrypt($application->employer_name) : '';
         $application->employer_address = $application->employer_address ?  decrypt($application->employer_address) : '';
+        $application->employer_city = $application->employer_city ?  decrypt($application->employer_city) : '';
+        $application->employer_state = $application->employer_state ?  decrypt($application->employer_state) : '';
+        $application->employer_zip_code = $application->employer_zip_code ?  decrypt($application->employer_zip_code) : '';
 
         $application->spouse_employment = $application->spouse_employment ?  decrypt($application->spouse_employment) : '';
         $application->spouse_position = $application->spouse_position ?  decrypt($application->spouse_position) : '';
         $application->spouse_employer_name = $application->spouse_employer_name ?  decrypt($application->spouse_employer_name) : '';
         $application->spouse_employer_address = $application->spouse_employer_address ?  decrypt($application->spouse_employer_address) : '';
-        
+        $application->spouse_employer_city = $application->spouse_employer_city ?  decrypt($application->spouse_employer_city) : '';
+        $application->spouse_employer_state = $application->spouse_employer_state ?  decrypt($application->spouse_employer_state) : '';
+        $application->spouse_employer_zip_code = $application->spouse_employer_zip_code ?  decrypt($application->spouse_employer_zip_code) : '';
 
         $application->properties = $application->properties ?  decrypt($application->properties) : '';
         $application->businesses = $application->businesses ?  decrypt($application->businesses) : '';
@@ -231,6 +239,9 @@ new class extends Component {
         $application->name = $application->name ?  decrypt($application->name) : '';
         $application->nick_name = $application->nick_name ?  decrypt($application->nick_name) : '';
         $application->address = $application->address ?  decrypt($application->address) : '';
+        $application->city = $application->city ?  decrypt($application->city) : '';
+        $application->state = $application->state ?  decrypt($application->state) : '';
+        $application->zip_code = $application->zip_code ?  decrypt($application->zip_code) : '';
         $application->tel_no = $application->tel_no ?  decrypt($application->tel_no) : '';
         $application->cell_no = $application->cell_no ?  decrypt($application->cell_no) : '';
         $application->length_of_stay = $application->length_of_stay ?  decrypt($application->length_of_stay) : '';
@@ -249,12 +260,17 @@ new class extends Component {
         $application->position = $application->position ?  decrypt($application->position) : '';
         $application->employer_name = $application->employer_name ?  decrypt($application->employer_name) : '';
         $application->employer_address = $application->employer_address ?  decrypt($application->employer_address) : '';
+        $application->employer_city = $application->employer_city ?  decrypt($application->employer_city) : '';
+        $application->employer_state = $application->employer_state ?  decrypt($application->employer_state) : '';
+        $application->employer_zip_code = $application->employer_zip_code ?  decrypt($application->employer_zip_code) : '';
 
         $application->spouse_employment = $application->spouse_employment ?  decrypt($application->spouse_employment) : '';
         $application->spouse_position = $application->spouse_position ?  decrypt($application->spouse_position) : '';
         $application->spouse_employer_name = $application->spouse_employer_name ?  decrypt($application->spouse_employer_name) : '';
         $application->spouse_employer_address = $application->spouse_employer_address ?  decrypt($application->spouse_employer_address) : '';
-        
+        $application->spouse_employer_city = $application->spouse_employer_city ?  decrypt($application->spouse_employer_city) : '';
+        $application->spouse_employer_state = $application->spouse_employer_state ?  decrypt($application->spouse_employer_state) : '';
+        $application->spouse_employer_zip_code = $application->spouse_employer_zip_code ?  decrypt($application->spouse_employer_zip_code) : '';
 
         $application->properties = $application->properties ?  decrypt($application->properties) : '';
         $application->businesses = $application->businesses ?  decrypt($application->businesses) : '';
